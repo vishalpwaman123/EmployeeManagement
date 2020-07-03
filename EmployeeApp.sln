@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryModel", "Employee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonModel", "Common\CommonModel.csproj", "{93CD96B3-A3CE-4223-947F-8CF0A24354D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiTestCase", "WebApiTestCase\WebApiTestCase.csproj", "{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{93CD96B3-A3CE-4223-947F-8CF0A24354D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93CD96B3-A3CE-4223-947F-8CF0A24354D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93CD96B3-A3CE-4223-947F-8CF0A24354D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

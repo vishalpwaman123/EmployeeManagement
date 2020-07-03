@@ -1,4 +1,10 @@
-﻿
+﻿//-------------------------------------------------------------------------
+// <copyright file="EmployeeBusiness.cs" company="BridgeLab">
+//      Copyright (c) Company. All rights reserved.
+// </copyright>
+// <author>Vishal Waman</author>
+//-------------------------------------------------------------------------
+
 namespace BusinessModel.Service
 {
     using System;
@@ -8,37 +14,53 @@ namespace BusinessModel.Service
     using CommonModel.Models;
     using RepositoryModel.Interface;
 
+        /// <summary>
+        /// Define class
+        /// </summary>
         public class EmployeeBusiness : BusinessInterface
-    {
+        {
        
+        /// <summary>
+        /// define repository interface object
+        /// </summary>
         private readonly RepositoryInterface employeeRepositoryL;
-
        
+        /// <summary>
+        /// define employee business constructor
+        /// </summary>
+        /// <param name="employeeRepository"></param>
         public EmployeeBusiness(RepositoryInterface employeeRepository)
         {
             this.employeeRepositoryL = employeeRepository;
         }
 
-       
-        public async Task<bool> AddEmployeeData(EmployeeModel employeeModel)
+       /// <summary>
+       /// Define add employee data declaration
+       /// </summary>
+       /// <param name="employeeModel">passing employee model object</param>
+       /// <returns>return boolean value</returns>
+        public async Task<int> AddEmployeeData(EmployeeModel employeeModel)
         {
             try
             {
                 if (employeeModel != null)
                 {
-                    var response = await this.employeeRepositoryL.AddEmployee(employeeModel);
-                    if (response == true)
+                    int response = await this.employeeRepositoryL.AddEmployee(employeeModel);
+                    if (response == 1)
                     {
-                        return true;
+                        return 1;
                     }
-                    else
+                    else if (response == 2)
                     {
-                        return false;
+                        return 2;
+                    }else
+                    {
+                        return 0;
                     }
                 }
                 else
                 {
-                    return false;
+                    return 0;
                 }
             }
             catch (Exception exception)
@@ -47,6 +69,10 @@ namespace BusinessModel.Service
             }
         }
 
+        /// <summary>
+        /// Declaration of get all employee method
+        /// </summary>
+        /// <returns>return list</returns>
         public IList<EmployeeModel> GetAllEmployee()
         {
             try
@@ -60,7 +86,12 @@ namespace BusinessModel.Service
             }
         }
 
-        public async Task<bool> DeleteEmployee(EmployeeModel employee)
+        /// <summary>
+        /// Declaration of delete employee method
+        /// </summary>
+        /// <param name="employee">passing employee model object</param>
+        /// <returns>return boolean value</returns>
+        public async Task<int> DeleteEmployee(EmployeeModel employee)
         {
             try
             {
@@ -69,16 +100,16 @@ namespace BusinessModel.Service
                     var response = await this.employeeRepositoryL.DeleteEmployee(employee);
                     if (response == true)
                     {
-                        return true;
+                        return 1;
                     }
                     else
                     {
-                        return false;
+                        return 0;
                     }
                 }
                 else
                 {
-                    return false;
+                    return 0;
                 }
             }
             catch (Exception exception)
@@ -87,6 +118,11 @@ namespace BusinessModel.Service
             }
         }
 
+        /// <summary>
+        /// Declaration of update employee method
+        /// </summary>
+        /// <param name="employee">passing employee model object</param>
+        /// <returns>return boolean value</returns>
         public async Task<bool> UpdateEmployee(EmployeeModel employee)
         {
             try
@@ -116,33 +152,28 @@ namespace BusinessModel.Service
             }
         }
 
-       /* public async Task<bool> SearchEmployee(EmployeeModel employeeModel)
+        /// <summary>
+        /// Declaration of employee detail
+        /// </summary>
+        /// <param name="Id">passing integer value</param>
+        /// <returns>return employee model object</returns>
+        public EmployeeModel GetSpecificEmployeeDetails(int Id)
         {
             try
             {
-                if (employeeModel != null)
-                {
-                    var response = await this.employeeRepositoryL.SearchEmployee(employeeModel);
-                    if (response == true)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                return employeeRepositoryL.GetSpecificEmployeeDetails(Id);
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                throw new Exception(exception.Message);
+                throw new Exception(e.Message);
             }
-        }*/
+        }
 
+        /// <summary>
+        /// declaration of search one employee method
+        /// </summary>
+        /// <param name="employeeModel">passing employee model object</param>
+        /// <returns>return list</returns>
         public IList<EmployeeModel> SearchOneEmployee(EmployeeModel employeeModel)
         {
             try
@@ -155,7 +186,5 @@ namespace BusinessModel.Service
                 throw new Exception(exception.Message);
             }
         }
-
-
     }
 }

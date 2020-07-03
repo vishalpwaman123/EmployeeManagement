@@ -24,6 +24,8 @@ namespace EmployeeApp
         {
             services.AddTransient<BusinessInterface, EmployeeBusiness>();
             services.AddTransient<RepositoryInterface, EmployeesRepository>();
+            services.AddTransient<BusinessRegistrationInterface, EmployeeBusinessRegistration>();
+            services.AddTransient<RepositoryRegistrationInterface, EmployeeRegistrationRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
        
