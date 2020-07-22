@@ -21,7 +21,7 @@ namespace RepositoryModel.Interface
         /// </summary>
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return boolean value</returns>
-        Task<int> AddEmployee(EmployeeModel employeeModel);
+        EmployeeModel AddEmployee(EmployeeModel employeeModel);
 
         /// <summary>
         /// define get all employee method
@@ -34,7 +34,7 @@ namespace RepositoryModel.Interface
         /// </summary>
         /// <param name="employeeModel">Passing employee model object</param>
         /// <returns>return boolean value</returns>
-        Task<bool> DeleteEmployee(EmployeeModel employeeModel);
+        EmployeeModel DeleteEmployee(int EmpId);
 
         /// <summary>
         /// Define update employee method
@@ -49,12 +49,5 @@ namespace RepositoryModel.Interface
         /// <param name="Id">Passing id value</param>
         /// <returns>return employee model object</returns>
         EmployeeModel GetSpecificEmployeeDetails(int Id);
-
-        /// <summary>
-        /// Define search one employee method
-        /// </summary>
-        /// <param name="employeeModel">Passing Employee object</param>
-        /// <returns>return list</returns>
-        IList<EmployeeModel> SearchOneEmployee(EmployeeModel employeeModel);
     }
 }

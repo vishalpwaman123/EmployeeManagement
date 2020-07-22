@@ -39,28 +39,25 @@ namespace BusinessModel.Service
        /// </summary>
        /// <param name="employeeModel">passing employee model object</param>
        /// <returns>return boolean value</returns>
-        public async Task<int> AddEmployeeData(EmployeeModel employeeModel)
+        public EmployeeModel AddEmployeeData(EmployeeModel employeeModel)
         {
             try
             {
                 if (employeeModel != null)
                 {
-                    int response = await this.employeeRepositoryL.AddEmployee(employeeModel);
-                    if (response == 1)
+                    var response = this.employeeRepositoryL.AddEmployee(employeeModel);
+                    if (response != null)
                     {
-                        return 1;
+                        return response;
                     }
-                    else if (response == 2)
+                    else
                     {
-                        return 2;
-                    }else
-                    {
-                        return 0;
+                        return null;
                     }
                 }
                 else
                 {
-                    return 0;
+                    return null;
                 }
             }
             catch (Exception exception)
@@ -91,25 +88,25 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employee">passing employee model object</param>
         /// <returns>return boolean value</returns>
-        public async Task<int> DeleteEmployee(EmployeeModel employee)
+        public EmployeeModel DeleteEmployee(int EmpId)
         {
             try
             {
-                if (employee != null)
+                if (EmpId != null)
                 {
-                    var response = await this.employeeRepositoryL.DeleteEmployee(employee);
-                    if (response == true)
+                    var response = this.employeeRepositoryL.DeleteEmployee(EmpId);
+                    if (response != null)
                     {
-                        return 1;
+                        return response;
                     }
                     else
                     {
-                        return 0;
+                        return null;
                     }
                 }
                 else
                 {
-                    return 0;
+                    return null;
                 }
             }
             catch (Exception exception)
@@ -169,22 +166,6 @@ namespace BusinessModel.Service
             }
         }
 
-        /// <summary>
-        /// declaration of search one employee method
-        /// </summary>
-        /// <param name="employeeModel">passing employee model object</param>
-        /// <returns>return list</returns>
-        public IList<EmployeeModel> SearchOneEmployee(EmployeeModel employeeModel)
-        {
-            try
-            {
-                var response = this.employeeRepositoryL.SearchOneEmployee(employeeModel);
-                return response;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
+        
     }
 }

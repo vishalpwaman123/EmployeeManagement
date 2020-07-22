@@ -23,7 +23,7 @@ namespace RepositoryModel.Interface
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>return boolean value</returns>
-        Task<bool> AddEmployeeData(RegistrationModel employeeModel);
+        RegistrationModel AddEmployeeData(RegistrationModel employeeModel);
 
         /// <summary>
         /// Define employee login method
@@ -31,5 +31,7 @@ namespace RepositoryModel.Interface
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>Return list</returns>
         IList<RegistrationModel> EmployeeLogin(RegistrationModel employeeModel);
+
+        RegistrationModel GetSpecificEmployeeAllDetailes(string EmailId);
     }
 }

@@ -11,7 +11,9 @@ namespace EmployeeApp.Controllers
     using System.Threading.Tasks;
     using BusinessModel.Interface;
     using CommonModel.Models;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Define Class
@@ -20,6 +22,9 @@ namespace EmployeeApp.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+
+        private IConfiguration configuration;
+
         /// <summary>
         /// Define business interface object
         /// </summary>
@@ -29,46 +34,41 @@ namespace EmployeeApp.Controllers
         /// Define Constructor
         /// </summary>
         /// <param name="employeeBusiness"></param>
-        public EmployeesController(BusinessInterface employeeBusiness)
+        public EmployeesController(BusinessInterface employeeBusiness , IConfiguration configuration)
         {
             this.employeeBusiness = employeeBusiness;
+            this.configuration = configuration;
         }
 
-      
         /// <summary>
         /// Define add employee data method
         /// </summary>
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return action result</returns>
-        //[Route("addEmployeeData")]
         [HttpPost]
-        public async Task<IActionResult> AddEmployeeData(EmployeeModel employeeModel)
+        public IActionResult AddEmployeeData(EmployeeModel employeeModel)
         {
             try
             {
-                int responseMessage = await this.employeeBusiness.AddEmployeeData(employeeModel);
-                if (responseMessage == 1 )
+                var responseMessage =  this.employeeBusiness.AddEmployeeData(employeeModel);
+                if (responseMessage != null )
                 {
-                    var status = "Success";
+                    bool Success = true;
                     var Message = "Add Employee Data Sucessfully ";
-                    return this.Ok(new { status , Message , Data = responseMessage });
+                    return this.Ok(new { Success , Message , Data = responseMessage });
                 }
-                else if (responseMessage == 0)
+                else 
                 {
-                    var status = "Failed";
+                    bool Success = false;
                     var Message = " Employee Insertion Failed ";
-                    return this.Ok(new { status , Message , Data = responseMessage });
+                    return this.BadRequest(new { Success , Message , Data = responseMessage });
                 }
-                else
-                {
-                    var status = "Email Insertion Failed";
-                    var Message = " Employee Insertion Failed , Employee Email Must Be Unique ";
-                    return this.Ok(new { status , Message , Data = responseMessage });
-                }
+                
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool Success = false;
+                return this.BadRequest(new { Success, message = e.Message });
             }
         }
 
@@ -77,20 +77,21 @@ namespace EmployeeApp.Controllers
         /// </summary>
         /// <returns>return action result</returns>
         [HttpGet]
-        //[Route("getAllEmployee")]
+        [Authorize]
         public IActionResult GetAllEmployee()
         {
             try
             {
                 var responseMessage = this.employeeBusiness.GetAllEmployee();
-                var status = "Success";
+                bool Success = true;
                 var Message = " Employee Data Found Sucessfully ";
-                return this.Ok(new { status, Message ,responseMessage });
+                return this.Ok(new { Success, Message ,responseMessage });
 
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool Success = false;
+                return this.BadRequest(new { Success, message = e.Message });
             }
         }
 
@@ -100,30 +101,29 @@ namespace EmployeeApp.Controllers
         /// <param name="employeeModel">passing empid</param>
         /// <returns>return action result</returns>
         [HttpDelete("{EmpId}")]
-        //[Route("deleteEmployeeData")]
-        public async Task<IActionResult> DeleteEmployee([FromRoute] EmployeeModel employeeModel)
+        public IActionResult DeleteEmployee([FromRoute] int EmpId)
         {
             try
             {
-                int responseMessage = await this.employeeBusiness.DeleteEmployee(employeeModel);
-                //return this.Ok(new { response });
-
-                if (responseMessage == 1)
+                //var result = employeeBusiness.GetSpecificEmployeeDetails(employeeModel.EmpId);
+                var responseMessage = this.employeeBusiness.DeleteEmployee(EmpId);
+                if (responseMessage != null)
                 {
-                    var status = "Success";
+                    bool Success = true;
                     var Message = "Delete Employee Data Sucessfully ";
-                    return this.Ok(new { status, Message, Data = responseMessage });
+                    return this.Ok(new { Success, Message, Data = responseMessage });
                 }
                 else 
                 {
-                    var status = "Failed";
+                    bool Success = false;
                     var Message = "Delete Employee Data Failed ";
-                    return this.Ok(new { status, Message, Data = responseMessage });
+                    return this.BadRequest(new { Success, Message, Data = responseMessage });
                 }
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool Success = false;
+                return this.BadRequest(new { Success, message = e.Message });
             }
         }
 
@@ -142,45 +142,25 @@ namespace EmployeeApp.Controllers
                 //return this.Ok(new { response });
                 if (responseMessage == true)
                 {
-                    var status = "Success";
+                    bool Success = true;
                     var Message = " Employee Data Sucessfully Update";
-                    return this.Ok(new { status, Message, Data = responseMessage });
+                    return this.Ok(new { Success, Message, Data = employeeModel });
                 }
                 else
                 {
-                    var status = "Failed";
+                    bool Success = false;
                     var Message = " Employee Data Updation Failed ";
-                    return this.Ok(new { status, Message, Data = responseMessage });
+                    return this.BadRequest(new { Success, Message, Data = employeeModel });
                 }
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool Success = false;
+                return this.BadRequest(new { Success, message = e.Message });
             }
         }
 
-        /// <summary>
-        /// declaration of get one employee method
-        /// </summary>
-        /// <param name="employeeModel">passing employee model object</param>
-        /// <returns>return action result</returns>
-        [HttpGet]
-        [Route("SearchOneEmployee")]
-        public IActionResult GetOneEmployee(EmployeeModel employeeModel)
-        {
-            try
-            {
-                var responseMessage = this.employeeBusiness.SearchOneEmployee(employeeModel);
-                var status = "Success";
-                var Message = " Employee Data Found Sucessfully";
-                return this.Ok(new { status, Message , Data =responseMessage });
         
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
 
         /// <summary>
         /// Declaration of get specific employee detail method
@@ -196,21 +176,22 @@ namespace EmployeeApp.Controllers
                 //if result is not equal to zero then details found
                 if (!result.Equals(null))
                 {
-                    var Status = "Success";
+                    bool Success = true;
                     var Message = "Employee Data found ";
-                    return this.Ok(new { Status, Message, Data = result });
+                    return this.Ok(new { Success, Message, Data = result });
                 }
                 else
                 {
-                    var Status = "Unsuccess";
+                    bool Success = false;
                     var Message = "Employee Data is Not found";
-                    return this.BadRequest(new { Status, Message, Data = result });
+                    return this.BadRequest(new { Success , Message, Data = result });
                 }
 
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                bool Success = false;
+                return this.BadRequest(new { Success , message = e.Message });
             }
         }
     }

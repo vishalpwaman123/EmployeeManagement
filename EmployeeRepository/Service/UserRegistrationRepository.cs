@@ -8,6 +8,7 @@
 namespace RepositoryModel.Service
 {
     using CommonModel.Models;
+    using Microsoft.Extensions.Configuration;
     using RepositoryModel.Interface;
     using System;
     using System.Collections.Generic;
@@ -21,8 +22,21 @@ namespace RepositoryModel.Service
     /// <summary>
     /// Define employee registration repository class
     /// </summary>
-    public class EmployeeRegistrationRepository : RepositoryRegistrationInterface
+    public class UserRegistrationRepository : RepositoryRegistrationInterface
     {
+        private SqlConnection sqlConnectionVariable;
+
+        public UserRegistrationRepository()
+        {
+            var configuration = this.GetConfiguration();
+            this.sqlConnectionVariable = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionVariable").Value);
+        }
+
+        public IConfigurationRoot GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            return builder.Build();
+        }
         /// <summary>
         /// Define flag attribute 
         /// </summary>
@@ -31,25 +45,28 @@ namespace RepositoryModel.Service
         /// <summary>
         /// Define connection variable
         /// </summary>
-        private static readonly string ConnectionVariable = "Server=DESKTOP-OF8D1IH;Database=EmployeeDatabase;Trusted_Connection=true;MultipleActiveResultSets=True";
+        //private static readonly string ConnectionVariable = "Server=DESKTOP-OF8D1IH;Database=EmployeeDatabase;Trusted_Connection=true;MultipleActiveResultSets=True";
         
         /// <summary>
         /// Define sql connection variable
         /// </summary>
-        SqlConnection sqlConnectionVariable = new SqlConnection(ConnectionVariable);
+        //SqlConnection sqlConnectionVariable = new SqlConnection(ConnectionVariable);
         
         /// <summary>
         /// Declaration of add employee data method
         /// </summary>
         /// <param name="employeeModel">Passing employee model object</param>
         /// <returns>return boolean value</returns>
-        public async Task<bool> AddEmployeeData(RegistrationModel employeeModel)
+        public RegistrationModel AddEmployeeData(RegistrationModel employeeModel)
         {
-            try
+            try              
             {
+                IList<RegistrationModel> employeeModelsList = new List<RegistrationModel>();
                 employeeModel.UserPassword=Encrypt(employeeModel.UserPassword).ToString();
                 SqlCommand sqlCommand = new SqlCommand("spAddRegistrationData", this.sqlConnectionVariable);
+                SqlCommand sqlCommand1 = new SqlCommand("spGetUserTableData", this.sqlConnectionVariable);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
+                
                 sqlCommand.Parameters.AddWithValue("@Firstname", employeeModel.Firstname);
                 sqlCommand.Parameters.AddWithValue("@Lastname", employeeModel.Lastname);
                 sqlCommand.Parameters.AddWithValue("@EmailID", employeeModel.EmailId);
@@ -58,21 +75,27 @@ namespace RepositoryModel.Service
                 sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.MobileNumber);
                 sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
                 sqlCommand.Parameters.AddWithValue("@Date", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                
                 this.sqlConnectionVariable.Open();
-                var response = await sqlCommand.ExecuteNonQueryAsync();
-                if (response > 0)
-                {
-                    return true;
+                
+                var response =  sqlCommand.ExecuteNonQuery();
+
+                this.sqlConnectionVariable.Close();
+                if (response == -1)
+                {   
+                    
+                    return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
+
         }
 
         /// <summary>
@@ -93,13 +116,22 @@ namespace RepositoryModel.Service
                 while (sqlDataReader.Read())
                 {
                     RegistrationModel employeeModel1 = new RegistrationModel();
+                    employeeModel1.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
                     employeeModel1.Firstname = sqlDataReader["FirstName"].ToString();
+                    employeeModel1.Lastname = sqlDataReader["LastName"].ToString();
+                    employeeModel1.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
+                    employeeModel1.MobileNumber = sqlDataReader["MobileAddress"].ToString();
+                    employeeModel1.Gender = sqlDataReader["Gender"].ToString();
                     employeeModel1.EmailId = sqlDataReader["EmailId"].ToString();
+                    employeeModel1.DayAndTime = sqlDataReader["DayAndTime"].ToString();
                     employeeModel1.UserPassword = Decrypt(sqlDataReader["UserPassword"].ToString());
+                    
                     if (employeeModel.Firstname == employeeModel1.Firstname || employeeModel.EmailId == employeeModel1.EmailId )
                     {
                         if (employeeModel.UserPassword == employeeModel1.UserPassword)
                         {
+                            employeeModel1.UserPassword = "NULL";
+                            employeeModelsList.Add(employeeModel1);
                             FlagsAttribute = 0;
                             break;
                         }
@@ -166,5 +198,43 @@ namespace RepositoryModel.Service
             var reader = new StreamReader(cryptoStream);
             return reader.ReadToEnd();
         }
+
+        public RegistrationModel GetSpecificEmployeeAllDetailes(string EmailId)
+        {
+            try
+            {
+                RegistrationModel employee = new RegistrationModel();
+
+                SqlCommand sqlCommand = new SqlCommand("spGetAllUserData", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+
+                    employee.EmailId = sqlDataReader["EmailId"].ToString();
+                    if (EmailId == employee.EmailId)
+                    {
+                        employee.Firstname = sqlDataReader["FirstName"].ToString();
+                        employee.Lastname = sqlDataReader["LastName"].ToString();
+                        employee.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
+                        employee.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
+                        employee.MobileNumber = sqlDataReader["MobileAddress"].ToString();
+                        employee.Gender = sqlDataReader["Gender"].ToString();
+                        employee.DayAndTime = sqlDataReader["DayAndTime"].ToString();
+                        break;
+                    }
+                }
+                this.sqlConnectionVariable.Close();
+                return employee;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            
+        }
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------
-// <copyright file="EmployeeBusinessRegistration.cs" company="BridgeLab">
+// <copyright file="UserBusinessRegistration.cs" company="BridgeLab">
 //      Copyright (c) Company. All rights reserved.
 // </copyright>
 // <author>Vishal Waman</author>
@@ -18,7 +18,7 @@ namespace BusinessModel.Service
     /// <summary>
     /// Define class 
     /// </summary>
-    public class EmployeeBusinessRegistration : BusinessRegistrationInterface
+    public class UserBusinessRegistration : BusinessRegistrationInterface
     {
         /// <summary>
         /// define repository registration interface object
@@ -29,7 +29,7 @@ namespace BusinessModel.Service
         /// declaration of employee business registration method
         /// </summary>
         /// <param name="employeeRepository">passing repository registration interface object</param>
-        public EmployeeBusinessRegistration(RepositoryRegistrationInterface employeeRepository)
+        public UserBusinessRegistration(RepositoryRegistrationInterface employeeRepository)
         {
             this.employeeRepositoryL = employeeRepository;
         }
@@ -39,25 +39,25 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return bool</returns>
-        public async Task<bool> AddEmployeeData(RegistrationModel employeeModel)
+        public RegistrationModel AddEmployeeData(RegistrationModel employeeModel)
         {
             try
             {
                 if (employeeModel != null)
                 {
-                    bool response = await this.employeeRepositoryL.AddEmployeeData(employeeModel);
-                    if (response == true)
+                    var response = this.employeeRepositoryL.AddEmployeeData(employeeModel);
+                    if ( response != null)
                     {
-                        return true;
+                        return response;
                     }
                     else
                     {
-                        return false;
+                        return null;
                     }
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception exception)

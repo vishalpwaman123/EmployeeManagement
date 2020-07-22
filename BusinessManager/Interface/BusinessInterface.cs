@@ -22,7 +22,7 @@ namespace BusinessModel.Interface
         /// </summary>
         /// <param name="employee">passing parameter object of employee model</param>
         /// <returns>return in boolean value</returns>
-        Task<int> AddEmployeeData(EmployeeModel employee);
+        //Task<int> AddEmployeeData(EmployeeModel employee);
 
         /// <summary>
         /// Define fet all employee method
@@ -35,7 +35,7 @@ namespace BusinessModel.Interface
         /// </summary>
         /// <param name="employee">passing employee model object</param>
         /// <returns></returns>
-        Task<int> DeleteEmployee(EmployeeModel employee);
+        EmployeeModel DeleteEmployee(int EmpId);
 
         /// <summary>
         /// Define Update employee method
@@ -51,11 +51,6 @@ namespace BusinessModel.Interface
         /// <returns>return employee model object</returns>
         EmployeeModel GetSpecificEmployeeDetails(int Id);
 
-        /// <summary>
-        /// Define search one employee method 
-        /// </summary>
-        /// <param name="employeeModel">passing employee model object</param>
-        /// <returns>return list</returns>
-        IList<EmployeeModel> SearchOneEmployee(EmployeeModel employeeModel);
+        EmployeeModel AddEmployeeData(EmployeeModel employeeModel);
     }
 }

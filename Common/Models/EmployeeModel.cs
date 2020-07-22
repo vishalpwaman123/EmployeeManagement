@@ -26,14 +26,14 @@ namespace CommonModel.Models
         /// </summary>
         [StringLength(maximumLength: 20, MinimumLength = 3,
          ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]
-        public string Fname { get; set; }
+        public string Firstname { get; set; }
 
         /// <summary>
         /// define last name variable
         /// </summary>
         [StringLength(maximumLength: 20, MinimumLength = 3,
          ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]
-        public string Lname { get; set; }
+        public string Lastname { get; set; }
 
         /// <summary>
         /// define email id variable

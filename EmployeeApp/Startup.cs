@@ -10,6 +10,11 @@ namespace EmployeeApp
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Swashbuckle.AspNetCore.Swagger;
+    using System.Text;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -24,9 +29,48 @@ namespace EmployeeApp
         {
             services.AddTransient<BusinessInterface, EmployeeBusiness>();
             services.AddTransient<RepositoryInterface, EmployeesRepository>();
-            services.AddTransient<BusinessRegistrationInterface, EmployeeBusinessRegistration>();
-            services.AddTransient<RepositoryRegistrationInterface, EmployeeRegistrationRepository>();
+            services.AddTransient<BusinessRegistrationInterface, UserBusinessRegistration>();
+            services.AddTransient<RepositoryRegistrationInterface, UserRegistrationRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Quantity Measurement API", Description = "Swagger Quantity Measurement API" });
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                c.AddSecurityRequirement(
+                    new Dictionary<string, IEnumerable<string>>
+                    { { "Bearer", new string[]{ } }
+                    });
+
+
+            });
+
+            var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = false;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
         }
        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -41,6 +85,12 @@ namespace EmployeeApp
             }
 
             app.UseHttpsRedirection();
+            
+            app.UseSwagger();
+            app.UseAuthentication();
+            app.UseSwaggerUI(
+                c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core API"); }
+                );
             app.UseMvc();
         }
     }

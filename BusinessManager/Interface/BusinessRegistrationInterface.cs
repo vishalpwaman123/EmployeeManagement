@@ -17,13 +17,13 @@ namespace BusinessModel.Interface
     /// Define Interface class
     /// </summary>
     public interface BusinessRegistrationInterface
-    {   
+    {
         /// <summary>
         /// Define add employee data method
         /// </summary>
         /// <param name="employee">passing registration model object</param>
         /// <returns>return boolean value</returns>
-        Task<bool> AddEmployeeData(RegistrationModel employee);
+        RegistrationModel AddEmployeeData(RegistrationModel employee);
 
         /// <summary>
         /// Define employye login method

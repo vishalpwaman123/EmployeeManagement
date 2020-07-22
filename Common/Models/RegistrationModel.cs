@@ -60,5 +60,7 @@ namespace CommonModel.Models
         [StringLength(maximumLength: 6, MinimumLength = 4,
         ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]
         public string Gender { get; set; }
+
+        public string DayAndTime { get; set; }
     }
 }
