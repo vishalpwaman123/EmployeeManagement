@@ -46,6 +46,7 @@ namespace EmployeeApp.Controllers
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return action result</returns>
         [HttpPost]
+        [Authorize]
         public IActionResult AddEmployeeData(EmployeeModel employeeModel)
         {
             try
@@ -101,6 +102,7 @@ namespace EmployeeApp.Controllers
         /// <param name="employeeModel">passing empid</param>
         /// <returns>return action result</returns>
         [HttpDelete("{EmpId}")]
+        [Authorize]
         public IActionResult DeleteEmployee([FromRoute] int EmpId)
         {
             try
@@ -133,6 +135,7 @@ namespace EmployeeApp.Controllers
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return action</returns>
         [HttpPost]
+        [Authorize]
         [Route("updateEmployeeData")]
         public async Task<IActionResult> UpdateEmployee(EmployeeModel employeeModel)
         {
@@ -168,6 +171,7 @@ namespace EmployeeApp.Controllers
         /// <param name="Id">passing id</param>
         /// <returns>return action result</returns>
         [HttpGet("{Id}")]
+        [Authorize]
         public ActionResult GetSpecificEmployeeDetails([FromRoute] int Id)
         {
             try

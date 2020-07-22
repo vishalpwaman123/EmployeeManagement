@@ -103,7 +103,7 @@ namespace RepositoryModel.Service
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>Return list</returns>
-        public IList<RegistrationModel> EmployeeLogin(RegistrationModel employeeModel)
+        public IList<RegistrationModel> EmployeeLogin(UserMode employeeModel)
         {
             try
             {
@@ -116,17 +116,17 @@ namespace RepositoryModel.Service
                 while (sqlDataReader.Read())
                 {
                     RegistrationModel employeeModel1 = new RegistrationModel();
-                    employeeModel1.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
+                    /*employeeModel1.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
                     employeeModel1.Firstname = sqlDataReader["FirstName"].ToString();
                     employeeModel1.Lastname = sqlDataReader["LastName"].ToString();
                     employeeModel1.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
                     employeeModel1.MobileNumber = sqlDataReader["MobileAddress"].ToString();
-                    employeeModel1.Gender = sqlDataReader["Gender"].ToString();
+                    employeeModel1.Gender = sqlDataReader["Gender"].ToString();*/
                     employeeModel1.EmailId = sqlDataReader["EmailId"].ToString();
-                    employeeModel1.DayAndTime = sqlDataReader["DayAndTime"].ToString();
+                    /*employeeModel1.DayAndTime = sqlDataReader["DayAndTime"].ToString();*/
                     employeeModel1.UserPassword = Decrypt(sqlDataReader["UserPassword"].ToString());
                     
-                    if (employeeModel.Firstname == employeeModel1.Firstname || employeeModel.EmailId == employeeModel1.EmailId )
+                    if (employeeModel.EmailId == employeeModel1.EmailId )
                     {
                         if (employeeModel.UserPassword == employeeModel1.UserPassword)
                         {

@@ -30,7 +30,7 @@ namespace BusinessModel.Interface
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return list</returns>
-        IList<RegistrationModel> EmployeeLogin(RegistrationModel employeeModel);
+        IList<RegistrationModel> EmployeeLogin(UserMode employeeModel);
 
     }
 }

@@ -50,7 +50,6 @@ namespace EmployeeApp
                     { { "Bearer", new string[]{ } }
                     });
 
-
             });
 
             var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);

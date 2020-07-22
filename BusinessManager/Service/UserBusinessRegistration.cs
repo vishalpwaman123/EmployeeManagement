@@ -71,7 +71,7 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return list</returns>
-        public IList<RegistrationModel> EmployeeLogin(RegistrationModel employeeModel)
+        public IList<RegistrationModel> EmployeeLogin(UserMode employeeModel)
         {
             try
             {

@@ -78,7 +78,7 @@ namespace SimpleApplication.Controllers
         [AllowAnonymous]
         [Route("Login")]
         [HttpPost]
-        public async Task<IActionResult> EmployeeLogin(RegistrationModel employeeModel)
+        public async Task<IActionResult> EmployeeLogin(UserMode employeeModel)
         {
             try
             {
@@ -88,12 +88,13 @@ namespace SimpleApplication.Controllers
                 if (responseMessage != null)
                 {
                     var tokenString = GenerateJsonWebToken(employeeModel);
-                    return Ok(new { token = tokenString });
+                    //return Ok(new { token = tokenString });
 
-                    /*bool Success = true;
+                    bool Success = true;
                     var Message = "User Login SuccessFully";
-                    return this.Ok(new { Success, Message, Data = responseMessage });
-*/                }
+                    return this.Ok(new { Success, Message, token = tokenString });
+
+                }
                 else
                 {
                     bool Success = false;
@@ -113,7 +114,7 @@ namespace SimpleApplication.Controllers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private string GenerateJsonWebToken(RegistrationModel data)
+        private string GenerateJsonWebToken(UserMode data)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

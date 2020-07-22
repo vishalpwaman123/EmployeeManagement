@@ -30,7 +30,7 @@ namespace RepositoryModel.Interface
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>Return list</returns>
-        IList<RegistrationModel> EmployeeLogin(RegistrationModel employeeModel);
+        IList<RegistrationModel> EmployeeLogin(UserMode employeeModel);
 
         RegistrationModel GetSpecificEmployeeAllDetailes(string EmailId);
     }
