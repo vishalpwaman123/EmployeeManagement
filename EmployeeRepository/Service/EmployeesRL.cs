@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------
-// <copyright file="EmployeesRepository.cs" company="BridgeLab">
+// <copyright file="EmployeesRL.cs" company="BridgeLab">
 //      Copyright (c) Company. All rights reserved.
 // </copyright>
 // <author>Vishal Waman</author>
@@ -20,12 +20,12 @@ namespace RepositoryModel.Service
     /// <summary>
     /// Define class
     /// </summary>
-    public class EmployeesRepository : RepositoryInterface
+    public class EmployeesRL : IEmployeeRL
     {
 
         private SqlConnection sqlConnectionVariable;
 
-        public EmployeesRepository()
+        public EmployeesRL()
         {
             var configuration = this.GetConfiguration();
             this.sqlConnectionVariable = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionVariable").Value);
@@ -52,7 +52,7 @@ namespace RepositoryModel.Service
         /// </summary>
         /// <param name="employeeModel">Passing employee model object</param>
         /// <returns>return boolean value</returns>
-        public EmployeeModel AddEmployee(EmployeeModel employeeModel)
+        public EmployeeModel AddEmployee(REmployeeModel employeeModel)
           {
             try
             {
@@ -67,8 +67,8 @@ namespace RepositoryModel.Service
                     sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
                     sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.mobileNumber);
                     sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
-                    sqlCommand.Parameters.AddWithValue("@DayAndTime", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                    sqlCommand.Parameters.AddWithValue("@Updation", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                    /*sqlCommand.Parameters.AddWithValue("@DayAndTime", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
+                    sqlCommand.Parameters.AddWithValue("@Updation", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));*/
                     this.sqlConnectionVariable.Open();
                     int response =  sqlCommand.ExecuteNonQuery();
                     this.sqlConnectionVariable.Close();
@@ -120,6 +120,7 @@ namespace RepositoryModel.Service
                     employeeModel.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
                     employeeModel.CurrentAddress = sqlDataReader["CurrentAddress"].ToString();
                     employeeModel.Gender = sqlDataReader["Gender"].ToString();
+                    employeeModel.DayAndTime = sqlDataReader["ModificationDate"].ToString();
                     employeeModelsList.Add(employeeModel);
                 }
                 this.sqlConnectionVariable.Close();
@@ -172,29 +173,28 @@ namespace RepositoryModel.Service
         /// </summary>
         /// <param name="employeeModel">employee model object passing</param>
         /// <returns>Return boolean value</returns>
-        public async Task<bool> UpdateEmployee(EmployeeModel employeeModel)
+        public EmployeeModel UpdateEmployee(REmployeeModel employeeModel)
         {
             try
             {
                 SqlCommand sqlCommand = new SqlCommand("spUpdateEmployeeData", this.sqlConnectionVariable);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@EmpId", employeeModel.EmpId);
                 sqlCommand.Parameters.AddWithValue("@FirstName", employeeModel.Firstname);
                 sqlCommand.Parameters.AddWithValue("@LastName", employeeModel.Lastname);
                 sqlCommand.Parameters.AddWithValue("@EmailId", employeeModel.EmailId);
                 sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.mobileNumber);
                 sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
                 sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
-                sqlCommand.Parameters.AddWithValue("@Updation", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
                 this.sqlConnectionVariable.Open();
-                var response = await sqlCommand.ExecuteNonQueryAsync();
+                var response = sqlCommand.ExecuteNonQuery();
+                this.sqlConnectionVariable.Close();
                 if (response == -1)
                 {
-                    return true;
+                    return GetSpecificEmployeeAllDetailes(employeeModel.EmailId); 
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception exception)
@@ -275,7 +275,6 @@ namespace RepositoryModel.Service
                         employee.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
                         employee.Gender = sqlDataReader["Gender"].ToString();
                         employee.DayAndTime = sqlDataReader["ModificationDate"].ToString();
-                        
                         break;
                     }
                 }
@@ -297,6 +296,7 @@ namespace RepositoryModel.Service
             string EmailId;
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
             sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@Flag", 1);
             this.sqlConnectionVariable.Open();
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())

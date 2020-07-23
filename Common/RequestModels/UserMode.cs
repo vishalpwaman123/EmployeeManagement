@@ -11,15 +11,15 @@ namespace CommonModel.Models
         /// <summary>
         /// define employee id variable
         /// </summary>
+        [Required]
         [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
         public string EmailId { get; set; }
 
         /// <summary>
         /// define user password variable
         /// </summary>
-        //[Required(ErrorMessage = "Required")]
-        //[StringLength(maximumLength: 4, MinimumLength = 10,
-        //ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]
+        [Required]
+        [RegularExpression("^.{3,30}$", ErrorMessage = "Password Length should be between 8 to 15")]
         public string UserPassword { get; set; }
 
     }

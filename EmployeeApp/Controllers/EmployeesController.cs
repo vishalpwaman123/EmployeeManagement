@@ -28,16 +28,15 @@ namespace EmployeeApp.Controllers
         /// <summary>
         /// Define business interface object
         /// </summary>
-        private readonly BusinessInterface employeeBusiness;
+        private readonly IEmployeeBL employeeBusiness;
 
         /// <summary>
         /// Define Constructor
         /// </summary>
         /// <param name="employeeBusiness"></param>
-        public EmployeesController(BusinessInterface employeeBusiness , IConfiguration configuration)
+        public EmployeesController(IEmployeeBL employeeBusiness)
         {
             this.employeeBusiness = employeeBusiness;
-            this.configuration = configuration;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace EmployeeApp.Controllers
         /// <returns>return action result</returns>
         [HttpPost]
         [Authorize]
-        public IActionResult AddEmployeeData(EmployeeModel employeeModel)
+        public IActionResult AddEmployeeData(REmployeeModel employeeModel)
         {
             try
             {
@@ -137,23 +136,23 @@ namespace EmployeeApp.Controllers
         [HttpPost]
         [Authorize]
         [Route("updateEmployeeData")]
-        public async Task<IActionResult> UpdateEmployee(EmployeeModel employeeModel)
+        public IActionResult UpdateEmployee(REmployeeModel employeeModel)
         {
             try
             {
-                var responseMessage = await this.employeeBusiness.UpdateEmployee(employeeModel);
+                var responseMessage = this.employeeBusiness.UpdateEmployee(employeeModel);
                 //return this.Ok(new { response });
-                if (responseMessage == true)
+                if (responseMessage != null)
                 {
                     bool Success = true;
                     var Message = " Employee Data Sucessfully Update";
-                    return this.Ok(new { Success, Message, Data = employeeModel });
+                    return this.Ok(new { Success, Message, Data = responseMessage });
                 }
                 else
                 {
                     bool Success = false;
                     var Message = " Employee Data Updation Failed ";
-                    return this.BadRequest(new { Success, Message, Data = employeeModel });
+                    return this.BadRequest(new { Success, Message, Data = responseMessage });
                 }
             }
             catch (Exception e)

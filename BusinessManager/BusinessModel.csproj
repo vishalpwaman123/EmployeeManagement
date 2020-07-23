@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Interface\BusinessInterface.cs">
+    <Compile Update="Interface\IEmployeeBL.cs">
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

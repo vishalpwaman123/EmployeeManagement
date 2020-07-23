@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------
-// <copyright file="BusinessRegistrationInterface.cs" company="BridgeLab">
+// <copyright file="IUserBL.cs" company="BridgeLab">
 //      Copyright (c) Company. All rights reserved.
 // </copyright>
 // <author>Vishal Waman</author>
@@ -16,21 +16,21 @@ namespace BusinessModel.Interface
     /// <summary>
     /// Define Interface class
     /// </summary>
-    public interface BusinessRegistrationInterface
+    public interface IUserBL
     {
         /// <summary>
         /// Define add employee data method
         /// </summary>
         /// <param name="employee">passing registration model object</param>
         /// <returns>return boolean value</returns>
-        RegistrationModel AddEmployeeData(RegistrationModel employee);
+        UserModel AddEmployeeData(RUserModel employee);
 
         /// <summary>
         /// Define employye login method
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return list</returns>
-        IList<RegistrationModel> EmployeeLogin(UserMode employeeModel);
+        UserModel UserLogin(UserMode employeeModel);
 
     }
 }

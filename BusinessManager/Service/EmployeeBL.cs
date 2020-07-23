@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------
-// <copyright file="EmployeeBusiness.cs" company="BridgeLab">
+// <copyright file="EmployeeBL.cs" company="BridgeLab">
 //      Copyright (c) Company. All rights reserved.
 // </copyright>
 // <author>Vishal Waman</author>
@@ -17,19 +17,19 @@ namespace BusinessModel.Service
         /// <summary>
         /// Define class
         /// </summary>
-        public class EmployeeBusiness : BusinessInterface
+        public class EmployeeBL : IEmployeeBL
         {
        
         /// <summary>
         /// define repository interface object
         /// </summary>
-        private readonly RepositoryInterface employeeRepositoryL;
+        private readonly IEmployeeRL employeeRepositoryL;
        
         /// <summary>
         /// define employee business constructor
         /// </summary>
         /// <param name="employeeRepository"></param>
-        public EmployeeBusiness(RepositoryInterface employeeRepository)
+        public EmployeeBL(IEmployeeRL employeeRepository)
         {
             this.employeeRepositoryL = employeeRepository;
         }
@@ -39,7 +39,7 @@ namespace BusinessModel.Service
        /// </summary>
        /// <param name="employeeModel">passing employee model object</param>
        /// <returns>return boolean value</returns>
-        public EmployeeModel AddEmployeeData(EmployeeModel employeeModel)
+        public EmployeeModel AddEmployeeData(REmployeeModel employeeModel)
         {
             try
             {
@@ -120,27 +120,27 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employee">passing employee model object</param>
         /// <returns>return boolean value</returns>
-        public async Task<bool> UpdateEmployee(EmployeeModel employee)
+        public EmployeeModel UpdateEmployee(REmployeeModel employee)
         {
             try
             {
                 if (employee != null)
                 {
                     
-                    var response = await this.employeeRepositoryL.UpdateEmployee(employee);
+                    var response =  this.employeeRepositoryL.UpdateEmployee(employee);
                     
-                    if (response == true)
+                    if (response != null)
                     {
-                        return true;
+                        return response;
                     }
                     else
                     {
-                        return false;
+                        return null;
                     }
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception exception)

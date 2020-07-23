@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------
-// <copyright file="UserBusinessRegistration.cs" company="BridgeLab">
+// <copyright file="UserBL.cs" company="BridgeLab">
 //      Copyright (c) Company. All rights reserved.
 // </copyright>
 // <author>Vishal Waman</author>
@@ -18,18 +18,18 @@ namespace BusinessModel.Service
     /// <summary>
     /// Define class 
     /// </summary>
-    public class UserBusinessRegistration : BusinessRegistrationInterface
+    public class UserBL : IUserBL
     {
         /// <summary>
         /// define repository registration interface object
         /// </summary>
-        private readonly RepositoryRegistrationInterface employeeRepositoryL;
+        private readonly IUserRL employeeRepositoryL;
 
         /// <summary>
         /// declaration of employee business registration method
         /// </summary>
         /// <param name="employeeRepository">passing repository registration interface object</param>
-        public UserBusinessRegistration(RepositoryRegistrationInterface employeeRepository)
+        public UserBL(IUserRL employeeRepository)
         {
             this.employeeRepositoryL = employeeRepository;
         }
@@ -39,7 +39,7 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return bool</returns>
-        public RegistrationModel AddEmployeeData(RegistrationModel employeeModel)
+        public UserModel AddEmployeeData(RUserModel employeeModel)
         {
             try
             {
@@ -71,11 +71,11 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return list</returns>
-        public IList<RegistrationModel> EmployeeLogin(UserMode employeeModel)
+        public UserModel UserLogin(UserMode employeeModel)
         {
             try
             {
-                var response = this.employeeRepositoryL.EmployeeLogin(employeeModel);
+                var response = this.employeeRepositoryL.UserLogin(employeeModel);
                 if (response == null)
                 {
                     return response;

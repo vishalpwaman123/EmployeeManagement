@@ -12,12 +12,12 @@ namespace WebApiTestCase
     public class UnitTestCase
     {
         EmployeesController employeeController;
-        BusinessInterface business;
-        RepositoryInterface repository;
+        IEmployeeBL business;
+        IEmployeeRL repository;
         public UnitTestCase()
         {
-            repository = new EmployeesRepository();
-            business = new EmployeeBusiness(repository);
+            repository = new EmployeesRL();
+            business = new EmployeeBL(repository);
             employeeController = new EmployeesController(business);
         }
 

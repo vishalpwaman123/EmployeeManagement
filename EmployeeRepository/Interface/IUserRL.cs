@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------
-// <copyright file="RepositoryRegistrationInterface.cs" company="BridgeLab">
+// <copyright file="IUserRL.cs" company="BridgeLab">
 //      Copyright (c) Company. All rights reserved.
 // </copyright>
 // <author>Vishal Waman</author>
@@ -16,22 +16,22 @@ namespace RepositoryModel.Interface
     /// <summary>
     /// Define Interface
     /// </summary>
-    public interface RepositoryRegistrationInterface
+    public interface IUserRL
     {
         /// <summary>
         /// Define Add employee data method
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>return boolean value</returns>
-        RegistrationModel AddEmployeeData(RegistrationModel employeeModel);
+        UserModel AddEmployeeData(RUserModel employeeModel);
 
         /// <summary>
         /// Define employee login method
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>Return list</returns>
-        IList<RegistrationModel> EmployeeLogin(UserMode employeeModel);
+        UserModel UserLogin(UserMode employeeModel);
 
-        RegistrationModel GetSpecificEmployeeAllDetailes(string EmailId);
+        UserModel GetSpecificEmployeeAllDetailes(string EmailId);
     }
 }

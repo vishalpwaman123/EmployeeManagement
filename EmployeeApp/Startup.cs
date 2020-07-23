@@ -27,15 +27,15 @@ namespace EmployeeApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<BusinessInterface, EmployeeBusiness>();
-            services.AddTransient<RepositoryInterface, EmployeesRepository>();
-            services.AddTransient<BusinessRegistrationInterface, UserBusinessRegistration>();
-            services.AddTransient<RepositoryRegistrationInterface, UserRegistrationRepository>();
+            services.AddTransient<IEmployeeBL, EmployeeBL>();
+            services.AddTransient<IEmployeeRL, EmployeesRL>();
+            services.AddTransient<IUserBL, UserBL>();
+            services.AddTransient<IUserRL, UserRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Quantity Measurement API", Description = "Swagger Quantity Measurement API" });
+                c.SwaggerDoc("v1", new Info { Title = "Employee Measurement API", Description = "Swagger Quantity Measurement API" });
 
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
