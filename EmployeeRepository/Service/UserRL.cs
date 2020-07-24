@@ -8,6 +8,7 @@
 namespace RepositoryModel.Service
 {
     using CommonModel.Models;
+    using CommonModel.RequestModels;
     using Microsoft.Extensions.Configuration;
     using RepositoryModel.Interface;
     using System;
@@ -20,7 +21,7 @@ namespace RepositoryModel.Service
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Define employee registration repository class
+    /// Define UserInstance registration repository class
     /// </summary>
     public class UserRL : IUserRL
     {
@@ -53,9 +54,9 @@ namespace RepositoryModel.Service
         //SqlConnection sqlConnectionVariable = new SqlConnection(ConnectionVariable);
         
         /// <summary>
-        /// Declaration of add employee data method
+        /// Declaration of add UserInstance data method
         /// </summary>
-        /// <param name="employeeModel">Passing employee model object</param>
+        /// <param name="employeeModel">Passing UserInstance model object</param>
         /// <returns>return boolean value</returns>
         public UserModel AddEmployeeData(RUserModel employeeModel)
         {
@@ -101,7 +102,7 @@ namespace RepositoryModel.Service
         }
 
         /// <summary>
-        /// Declaration employee login method
+        /// Declaration UserInstance login method
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>Return list</returns>
@@ -256,5 +257,32 @@ namespace RepositoryModel.Service
             return true;
         }
 
+        public bool ForgetPassword(ForgetPasswordModel forgetpasswordModel)
+        {
+            try
+            {
+                string EmailId;
+                ForgetPasswordModel UserInstance = new ForgetPasswordModel();
+                SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Flag", 0);
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    EmailId = sqlDataReader["EmailId"].ToString();
+                    if (EmailId == forgetpasswordModel.EmailId)
+                    {
+                        return true;
+                    }
+                }
+                this.sqlConnectionVariable.Close();
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

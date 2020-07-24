@@ -8,6 +8,7 @@
 namespace RepositoryModel.Interface
 {
     using CommonModel.Models;
+    using CommonModel.RequestModels;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -33,5 +34,7 @@ namespace RepositoryModel.Interface
         UserModel UserLogin(UserMode employeeModel);
 
         UserModel GetSpecificEmployeeAllDetailes(string EmailId);
+
+        bool ForgetPassword(ForgetPasswordModel forgetpasswordModel);
     }
 }

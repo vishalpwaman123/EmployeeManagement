@@ -23,8 +23,6 @@ namespace EmployeeApp.Controllers
     public class EmployeesController : ControllerBase
     {
 
-        private IConfiguration configuration;
-
         /// <summary>
         /// Define business interface object
         /// </summary>

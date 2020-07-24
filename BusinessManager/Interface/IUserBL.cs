@@ -8,6 +8,7 @@
 namespace BusinessModel.Interface
 {
     using CommonModel.Models;
+    using CommonModel.RequestModels;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -31,6 +32,8 @@ namespace BusinessModel.Interface
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return list</returns>
         UserModel UserLogin(UserMode employeeModel);
+
+        bool ForgetPassword(ForgetPasswordModel forgetpasswordModel);
 
     }
 }

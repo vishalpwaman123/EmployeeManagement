@@ -14,13 +14,13 @@ namespace SimpleApplication
         {
             MessageQueue messageQ;
 
-            if (MessageQueue.Exists(@".\Private$\messageq"))
+            if (MessageQueue.Exists(@".\Private$\messagequeue"))
             {
-                messageQ = new MessageQueue(@".\Private$\messageq");
+                messageQ = new MessageQueue(@".\Private$\messagequeue");
             }
             else
             {
-                messageQ = MessageQueue.Create(@".\Private$\messageq");
+                messageQ = MessageQueue.Create(@".\Private$\messagequeue");
             }
 
             Message message = new Message();

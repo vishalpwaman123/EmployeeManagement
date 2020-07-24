@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Experimental.System.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,17 +9,16 @@ namespace MSMQ
     {
        public static void Main(string[] args)
         {
-            var listener = new MSMQListener(@".\Private$\messageq");
-            listener.MessageReceived += new MessageReceivedEventHandler(listnerMessageReceived);
-            listener.Start();
-            Console.WriteLine("Read Message");
-            Console.ReadLine();
-            listener.Stop();
-        }
+            Console.WriteLine("Message");
 
-        public static void listnerMessageReceived(object sender, MessageEventArgs args)
-        {
-            Console.WriteLine(args.MessageBody);
+            MessageQueue messageQueue;
+            messageQueue = new MessageQueue(@".\Private$\messagequeue");
+
+            Message message = messageQueue.Receive();
+            message.Formatter = new BinaryMessageFormatter();
+
+            Console.WriteLine(message.Body.ToString());
+            Console.ReadLine();
         }
     }
 }

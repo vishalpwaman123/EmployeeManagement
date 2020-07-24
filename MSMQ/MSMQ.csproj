@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="1.10.0" />
     <PackageReference Include="MimeKit" Version="1.10.0" />
   </ItemGroup>
 

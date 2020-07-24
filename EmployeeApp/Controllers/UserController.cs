@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessModel.Interface;
 using CommonModel.Models;
+using CommonModel.RequestModels;
+using EmployeeManagement.SMTP;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,12 +42,13 @@ namespace SimpleApplication.Controllers
         }
 
         Sender senderObject = new Sender();
-
+        SMTP smtpObject = new SMTP();
         /// <summary>
         /// Declaration of add employee method
         /// </summary>
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>Return action</returns>
+        [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
         public IActionResult AddUser(RUserModel employeeModel)
@@ -56,12 +59,12 @@ namespace SimpleApplication.Controllers
                 if (responseMessage != null)
                 {
                     //Message For MSMQ.
-                    string message = " Hello " + Convert.ToString(employeeModel.Firstname) + " " + Convert.ToString(employeeModel.Lastname) +
+                    string message = "  Hello " + Convert.ToString(employeeModel.Firstname) + " " + Convert.ToString(employeeModel.Lastname) +
                                      "\n Your " + "Registration Succesful" +
                                      "\n Email :" + Convert.ToString(employeeModel.EmailId) +
                                      "\n MobileNumber: " + Convert.ToString(employeeModel.MobileNumber) +
-                                     "\n CurrentAddress" + Convert.ToString(employeeModel.CurrentAddress) +
-                                     "\n Gender" + Convert.ToString(employeeModel.Gender);
+                                     "\n CurrentAddress:  " + Convert.ToString(employeeModel.CurrentAddress) +
+                                     "\n Gender : " + Convert.ToString(employeeModel.Gender);
 
                     //Sending Message To MSMQ.
                     senderObject.Send(message);
@@ -96,12 +99,12 @@ namespace SimpleApplication.Controllers
         {
             try
             {
-                IActionResult response = Unauthorized();
+                //IActionResult response = Unauthorized();
                 var responseMessage =  this.employeeBusiness.UserLogin(UserModel);
 
                 if (responseMessage != null)
                 {
-                    var tokenString = GenerateJsonWebToken(UserModel, "user authenticate");
+                    var tokenString = GenerateJsonWebToken(UserModel.EmailId, "user authenticate");
                     responseMessage.Token = tokenString;
 
                     bool Success = true;
@@ -123,18 +126,57 @@ namespace SimpleApplication.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [Route("ForgetPassword")]
+        [HttpPost]
+        public IActionResult ForgetPassword(ForgetPasswordModel forgetpasswordModel)
+        {
+            try
+            {
+                var responseMessage =  this.employeeBusiness.ForgetPassword(forgetpasswordModel);
+                if (responseMessage == true)
+                {
+                    string tokenString = GenerateJsonWebToken(forgetpasswordModel.EmailId, "user authenticate");
+
+                    //Message For MSMQ.
+                    string message = "  Token : " + tokenString +
+                                     "\n Email :" + Convert.ToString(forgetpasswordModel.EmailId);
+                                     
+                    //Sending Message To MSMQ.
+                    senderObject.Send(message);
+                    smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
+                    bool Success = true;
+                    var Message = "Password Send On User Email Address SuccessFully";
+                    return this.Ok(new { Success, Message });
+
+                }
+                else
+                {
+                    bool Success = false;
+                    var Message = "Invalid Email Id";
+                    return this.BadRequest(new { Success, Message, Data = responseMessage });
+                }
+            }
+            catch (Exception e)
+            {
+                bool Success = false;
+                return this.BadRequest(new { Success, message = e.Message });
+            }
+            
+        }
+
         /// <summary>
         /// Function For JsonToken Generation.
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private string GenerateJsonWebToken(UserMode data, string type)
+        private string GenerateJsonWebToken(string data, string type)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>();
-            claims.Add(new Claim("EmailId", data.EmailId.ToString()));
+            claims.Add(new Claim("EmailId", data));
             claims.Add(new Claim("TokenType", type));
 
             var token = new JwtSecurityToken(

@@ -9,6 +9,7 @@ namespace BusinessModel.Service
 {
     using BusinessModel.Interface;
     using CommonModel.Models;
+    using CommonModel.RequestModels;
     using RepositoryModel.Interface;
     using System;
     using System.Collections.Generic;
@@ -81,6 +82,23 @@ namespace BusinessModel.Service
                     return response;
                 }
                 return response;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public bool ForgetPassword(ForgetPasswordModel forgetpasswordModel)
+        {
+            try
+            {
+                var response = this.employeeRepositoryL.ForgetPassword(forgetpasswordModel);
+                if (response == true)
+                {
+                    return true;
+                }
+                return false;
             }
             catch (Exception exception)
             {
