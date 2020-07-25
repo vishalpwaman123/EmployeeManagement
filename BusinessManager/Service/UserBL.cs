@@ -105,5 +105,23 @@ namespace BusinessModel.Service
                 throw new Exception(exception.Message);
             }
         }
+
+        public bool ResetPassword(ResetPasswordModel resetPasswordModel, string EmailId)
+        {
+            try
+            {
+                var response = this.employeeRepositoryL.ResetPassword(resetPasswordModel, EmailId);
+                if (response == true)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
     }
 }

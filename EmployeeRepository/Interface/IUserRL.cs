@@ -36,5 +36,8 @@ namespace RepositoryModel.Interface
         UserModel GetSpecificEmployeeAllDetailes(string EmailId);
 
         bool ForgetPassword(ForgetPasswordModel forgetpasswordModel);
+
+        bool ResetPassword(ResetPasswordModel resetPasswordModel, string EmailId);
+
     }
 }

@@ -58,24 +58,24 @@ namespace RepositoryModel.Service
         /// </summary>
         /// <param name="employeeModel">Passing UserInstance model object</param>
         /// <returns>return boolean value</returns>
-        public UserModel AddEmployeeData(RUserModel employeeModel)
+        public UserModel AddEmployeeData(RUserModel UserModel)
         {
             try              
             {
-                if (EmailChecking(employeeModel.EmailId))
+                if (EmailChecking(UserModel.EmailId))
                 {
                     IList<UserModel> employeeModelsList = new List<UserModel>();
-                    employeeModel.UserPassword = Encrypt(employeeModel.UserPassword).ToString();
+                    UserModel.UserPassword = Encrypt(UserModel.UserPassword).ToString();
                     SqlCommand sqlCommand = new SqlCommand("spAddRegistrationData", this.sqlConnectionVariable);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                    sqlCommand.Parameters.AddWithValue("@Firstname", employeeModel.Firstname);
-                    sqlCommand.Parameters.AddWithValue("@Lastname", employeeModel.Lastname);
-                    sqlCommand.Parameters.AddWithValue("@EmailID", employeeModel.EmailId);
-                    sqlCommand.Parameters.AddWithValue("@UserPassword", employeeModel.UserPassword);
-                    sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
-                    sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.MobileNumber);
-                    sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
+                    sqlCommand.Parameters.AddWithValue("@Firstname", UserModel.Firstname);
+                    sqlCommand.Parameters.AddWithValue("@Lastname", UserModel.Lastname);
+                    sqlCommand.Parameters.AddWithValue("@EmailID", UserModel.EmailId);
+                    sqlCommand.Parameters.AddWithValue("@UserPassword", UserModel.UserPassword);
+                    sqlCommand.Parameters.AddWithValue("@CurrentAddress", UserModel.CurrentAddress);
+                    sqlCommand.Parameters.AddWithValue("@MobileNumber", UserModel.MobileNumber);
+                    sqlCommand.Parameters.AddWithValue("@Gender", UserModel.Gender);
 
                     this.sqlConnectionVariable.Open();
 
@@ -85,7 +85,7 @@ namespace RepositoryModel.Service
                     if (response == -1)
                     {
 
-                        return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
+                        return GetSpecificEmployeeAllDetailes(UserModel.EmailId);
                     }
                     else
                     {
@@ -261,23 +261,56 @@ namespace RepositoryModel.Service
         {
             try
             {
-                string EmailId;
+                int Flag;
                 ForgetPasswordModel UserInstance = new ForgetPasswordModel();
-                SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
+                SqlCommand sqlCommand = new SqlCommand("spgetEmailByCondition", this.sqlConnectionVariable);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@Flag", 0);
+                sqlCommand.Parameters.AddWithValue("@EmailId", forgetpasswordModel.EmailId);
                 this.sqlConnectionVariable.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                while (sqlDataReader.Read())
+                sqlDataReader.Read();
+                Flag = Convert.ToInt32(sqlDataReader["EmpId"]);
+                if (Flag > 0)
                 {
-                    EmailId = sqlDataReader["EmailId"].ToString();
-                    if (EmailId == forgetpasswordModel.EmailId)
-                    {
-                        return true;
-                    }
+                   return true;
                 }
                 this.sqlConnectionVariable.Close();
                 return false;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public bool ResetPassword(ResetPasswordModel resetPasswordModel, string EmailId )
+        {
+            try
+            {
+                if (resetPasswordModel.EmailId == EmailId)
+                {
+                    ForgetPasswordModel UserInstance = new ForgetPasswordModel();
+                    SqlCommand sqlCommand = new SqlCommand("spResetPassword", this.sqlConnectionVariable);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    if (resetPasswordModel.ConfirmPassword == resetPasswordModel.NewPassword)
+                    {
+                        resetPasswordModel.NewPassword = Encrypt(resetPasswordModel.NewPassword).ToString();
+                        sqlCommand.Parameters.AddWithValue("@EmailId", resetPasswordModel.EmailId);
+                        sqlCommand.Parameters.AddWithValue("@NewPassword", resetPasswordModel.NewPassword);
+                        this.sqlConnectionVariable.Open();
+                        SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                        this.sqlConnectionVariable.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception e)
             {

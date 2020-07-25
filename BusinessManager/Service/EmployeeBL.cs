@@ -92,7 +92,7 @@ namespace BusinessModel.Service
         {
             try
             {
-                if (EmpId != null)
+                if (EmpId != 0 )
                 {
                     var response = this.employeeRepositoryL.DeleteEmployee(EmpId);
                     if (response != null)

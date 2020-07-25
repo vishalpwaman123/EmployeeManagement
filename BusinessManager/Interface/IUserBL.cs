@@ -35,5 +35,7 @@ namespace BusinessModel.Interface
 
         bool ForgetPassword(ForgetPasswordModel forgetpasswordModel);
 
+        bool ResetPassword(ResetPasswordModel resetPasswordModel , string EmailId);
+
     }
 }

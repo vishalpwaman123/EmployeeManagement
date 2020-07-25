@@ -18,33 +18,12 @@ namespace EmployeeManagement.SMTP
         /// <param name="data"></param>
         public void SendEmail(string mail, string data)
         {
-            /*try
+            try
             {
-                var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("vishal",mail));
-                message.To.Add(new MailboxAddress("Employee Management", "1001thebeast1001@gmail.com"));
-                message.Subject = "Registration";
-                message.Body = new TextPart("plain")
-                {
-                    Text = data
-                };
-
-                using(var client = new SmtpClient())
-                {
-                    client.Connect("smtp.gmail.com",587,false);
-                    client.Authenticate("1001thebeast1001@gmail.com", "8806787166");
-                    client.Send(message);
-                    client.Disconnect(true);
-                }
-            }
-                   catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }*/
-
+                string link= "https://localhost:44324/api/User/ResetPassword";
             MailMessage message = new MailMessage("1001thebeast1001@gmail.com", mail);
             message.Subject = " Forget Password";
-            message.Body = string.Format("Hello : <h1>{0}</h1> is Your Email id <br/> your Token is <h1>{1}</h1>", mail, data);
+            message.Body = string.Format("Hello : <h1>{0}</h1> is Your Email id <br/> your Token is <h1>{1}</h1> <br/> Reset App Link is <h1>{2}</h1>", mail, data , link);
             message.IsBodyHtml = true;
 
             SmtpClient smtp = new SmtpClient();
@@ -57,6 +36,13 @@ namespace EmployeeManagement.SMTP
             smtp.Credentials = net;
             smtp.Port = 587;
             smtp.Send(message);
+            }
+                   catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+
 
 
         }

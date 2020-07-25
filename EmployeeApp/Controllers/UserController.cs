@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -25,7 +26,7 @@ namespace SimpleApplication.Controllers
     public class UserController : ControllerBase
     {
         private IConfiguration configuration;
-
+        public string EmailId = null ;
         /// <summary>
         /// define business registration interface object
         /// </summary>
@@ -145,6 +146,10 @@ namespace SimpleApplication.Controllers
                     //Sending Message To MSMQ.
                     senderObject.Send(message);
                     smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
+
+                    string message1 = Convert.ToString(forgetpasswordModel.EmailId);
+                    senderObject.Senders(message1);
+
                     bool Success = true;
                     var Message = "Password Send On User Email Address SuccessFully";
                     return this.Ok(new { Success, Message });
@@ -164,6 +169,39 @@ namespace SimpleApplication.Controllers
             }
             
         }
+
+        [Authorize]
+        [Route("ResetPassword")]
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            try
+            {
+                EmailId = senderObject.Receivers();
+                var responseMessage = this.employeeBusiness.ResetPassword(resetPasswordModel, EmailId);
+                if (responseMessage == true)
+                {
+                    senderObject.clears();
+                    bool Success = true;
+                    var Message = "Reset Password SuccessFully";
+                    return this.Ok(new { Success, Message });
+
+                }
+                else
+                {
+                    bool Success = false;
+                    var Message = "Reset Password UnSuccessFully";
+                    return this.BadRequest(new { Success, Message, Data = responseMessage });
+                }
+            }
+            catch (Exception e)
+            {
+                bool Success = false;
+                return this.BadRequest(new { Success, message = e.Message });
+            }
+
+        }
+
 
         /// <summary>
         /// Function For JsonToken Generation.
