@@ -287,15 +287,14 @@ namespace RepositoryModel.Service
         {
             try
             {
-                if (resetPasswordModel.EmailId == EmailId)
-                {
+                
                     ForgetPasswordModel UserInstance = new ForgetPasswordModel();
                     SqlCommand sqlCommand = new SqlCommand("spResetPassword", this.sqlConnectionVariable);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     if (resetPasswordModel.ConfirmPassword == resetPasswordModel.NewPassword)
                     {
                         resetPasswordModel.NewPassword = Encrypt(resetPasswordModel.NewPassword).ToString();
-                        sqlCommand.Parameters.AddWithValue("@EmailId", resetPasswordModel.EmailId);
+                        sqlCommand.Parameters.AddWithValue("@EmailId", EmailId);
                         sqlCommand.Parameters.AddWithValue("@NewPassword", resetPasswordModel.NewPassword);
                         this.sqlConnectionVariable.Open();
                         SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -306,11 +305,7 @@ namespace RepositoryModel.Service
                     {
                         return false;
                     }
-                }
-                else
-                {
-                    return false;
-                }
+               
             }
             catch (Exception e)
             {

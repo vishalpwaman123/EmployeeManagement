@@ -64,6 +64,18 @@ namespace SimpleApplication
             
         }
 
+        /*public string ReceiversQueue()
+        {
+            MessageQueue messageQueue;
+            messageQueue = new MessageQueue(@".\Private$\messageq");
+
+            Message message = messageQueue.Receive();
+            message.Formatter = new BinaryMessageFormatter();
+            Senders(message.Body.ToString());
+            return message.Body.ToString(); ;
+
+        }*/
+
         public void clears()
         {
             MessageQueue messageQueue;

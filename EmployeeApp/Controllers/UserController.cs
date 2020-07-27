@@ -60,7 +60,7 @@ namespace SimpleApplication.Controllers
                 if (responseMessage != null)
                 {
                     //Message For MSMQ.
-                    string message = "  Hello " + Convert.ToString(UserModel.Firstname) + " " + Convert.ToString(UserModel.Lastname) +
+                    /*string message = "  Hello " + Convert.ToString(UserModel.Firstname) + " " + Convert.ToString(UserModel.Lastname) +
                                      "\n Your " + "Registration Succesful" +
                                      "\n Email :" + Convert.ToString(UserModel.EmailId) +
                                      "\n MobileNumber: " + Convert.ToString(UserModel.MobileNumber) +
@@ -68,7 +68,7 @@ namespace SimpleApplication.Controllers
                                      "\n Gender : " + Convert.ToString(UserModel.Gender);
 
                     //Sending Message To MSMQ.
-                    senderObject.Send(message);
+                    senderObject.Send(message);*/
 
                     bool Success = true;
                     var Message = "UserController SuccessFull";
@@ -146,7 +146,7 @@ namespace SimpleApplication.Controllers
                     //Sending Message To MSMQ.
                     senderObject.Send(message);
                     smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
-
+                    
                     string message1 = Convert.ToString(forgetpasswordModel.EmailId);
                     senderObject.Senders(message1);
 

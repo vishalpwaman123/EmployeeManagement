@@ -52,6 +52,30 @@ namespace WebApiTestCase
         }
 
         [Fact]
+        public void GivenTestCase_WhenSameEmailIdFields_ShouldReturnOkRequest()
+        {
+
+            try
+            {
+                REmployeeModel EmployeeModel = new REmployeeModel();
+                EmployeeModel.Firstname = "Vishal";
+                EmployeeModel.Lastname = "Wamankar";
+                EmployeeModel.EmailId = "rahul@gmail.com";
+                EmployeeModel.CurrentAddress = "Kondhwa";
+                EmployeeModel.Gender = "male";
+                EmployeeModel.mobileNumber = 7758039722;
+
+                var response = employeeController.AddEmployeeData(EmployeeModel);
+                Assert.IsType<OkObjectResult>(response);
+
+            }
+            catch (Exception exception)
+            {
+                Assert.IsType<BadRequestObjectResult>(exception);
+            }
+        }
+
+        [Fact]
         public void GivenTestCase_WhenEmptyStringFields_ShouldReturnBadRequest()
         {
             try {

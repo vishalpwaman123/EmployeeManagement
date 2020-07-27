@@ -8,6 +8,7 @@
 namespace BusinessModel.Service
 {
     using BusinessModel.Interface;
+    using CommonModel.Exceptions;
     using CommonModel.Models;
     using CommonModel.RequestModels;
     using RepositoryModel.Interface;
@@ -40,13 +41,22 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return bool</returns>
-        public UserModel AddEmployeeData(RUserModel employeeModel)
+        public UserModel AddEmployeeData(RUserModel UserModel)
         {
             try
             {
-                if (employeeModel != null)
+                if (UserModel != null)
                 {
-                    var response = this.employeeRepositoryL.AddEmployeeData(employeeModel);
+                        if (UserModel.Firstname == "" || UserModel.Lastname == "" || UserModel.CurrentAddress == "" || UserModel.EmailId == "" || UserModel.MobileNumber == "" || UserModel.Gender == "" || UserModel.UserPassword == "")
+                        {
+                            throw new CustomeException(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, "Empty Variable Field");
+                        }
+                        else if (UserModel.Firstname == null || UserModel.Lastname == null || UserModel.CurrentAddress == null || UserModel.EmailId == null)
+                        {
+                            throw new CustomeException(CustomeException.ExceptionType.NULL_FIELD_EXCEPTION, "Null Variable Field");
+                        }
+
+                        var response = this.employeeRepositoryL.AddEmployeeData(UserModel);
                     if ( response != null)
                     {
                         return response;

@@ -35,7 +35,7 @@ namespace EmployeeApp
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Employee Measurement API", Description = "Swagger Quantity Measurement API" });
+                c.SwaggerDoc("v1", new Info { Title = "Employee Management API", Description = "Swagger Employee Management API" });
 
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
