@@ -11,7 +11,7 @@ namespace CommonModel.Models
         /// define first name variable
         /// </summary>
         /// 
-        [Required(ErrorMessage = "First Name is required.")]
+        [Required(ErrorMessage = "First Name is required")]
         /*[StringLength(maximumLength: 20, MinimumLength = 3,
          ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]*/
         public string Firstname { get; set; }
@@ -19,7 +19,7 @@ namespace CommonModel.Models
         /// <summary>
         /// define last name variable
         /// </summary>
-        [Required(ErrorMessage = "Last Name is required.")]
+        [Required(ErrorMessage = "Last Name is required")]
         /*[StringLength(maximumLength: 20, MinimumLength = 3,
          ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]*/
         public string Lastname { get; set; }
@@ -27,15 +27,15 @@ namespace CommonModel.Models
         /// <summary>
         /// define email id variable
         /// </summary>
-        [Required]
-        [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
+        [Required(ErrorMessage = "EmailId is not valid")]
+        [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$")]
         public string EmailId { get; set; }
 
         /// <summary>
         /// define mobile number variable
         /// </summary>
         //[RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
-        [Required]
+        [Required(ErrorMessage = "Mobile Number is not valid")]
         public Int64 mobileNumber { get; set; }
 
         /// <summary>

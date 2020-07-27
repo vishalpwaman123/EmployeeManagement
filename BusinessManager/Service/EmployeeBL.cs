@@ -9,8 +9,10 @@ namespace BusinessModel.Service
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection.Metadata;
     using System.Threading.Tasks;
     using BusinessModel.Interface;
+    using CommonModel.Exceptions;
     using CommonModel.Models;
     using RepositoryModel.Interface;
 
@@ -45,6 +47,14 @@ namespace BusinessModel.Service
             {
                 if (employeeModel != null)
                 {
+                    if (employeeModel.Firstname == "" || employeeModel.Lastname == "" || employeeModel.CurrentAddress == "" || employeeModel.EmailId == "" || employeeModel.mobileNumber < 999999999 || employeeModel.Gender == "")
+                    {
+                        throw new CustomeException(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, "Empty Variable Field");
+                    }else if (employeeModel.Firstname == null || employeeModel.Lastname == null || employeeModel.CurrentAddress == null || employeeModel.EmailId == null)
+                    {
+                        throw new CustomeException(CustomeException.ExceptionType.NULL_FIELD_EXCEPTION, "Empty Variable Field");
+                    }
+
                     var response = this.employeeRepositoryL.AddEmployee(employeeModel);
                     if (response != null)
                     {

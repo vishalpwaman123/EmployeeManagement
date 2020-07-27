@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryModel", "Employee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonModel", "Common\CommonModel.csproj", "{93CD96B3-A3CE-4223-947F-8CF0A24354D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiTestCase", "WebApiTestCase\WebApiTestCase.csproj", "{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagementTestCase", "WebApiTestCase\EmployeeManagementTestCase.csproj", "{3FF13CAB-C575-4E1F-91F5-A9D29E38955D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSMQ", "MSMQ\MSMQ.csproj", "{48E0F246-6725-41DA-8E4F-BB49374117B2}"
 EndProject

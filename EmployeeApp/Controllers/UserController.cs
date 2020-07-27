@@ -52,20 +52,20 @@ namespace SimpleApplication.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
-        public IActionResult AddUser(RUserModel employeeModel)
+        public IActionResult AddUser(RUserModel UserModel)
         {
             try
             {
-                var responseMessage =  this.employeeBusiness.AddEmployeeData(employeeModel);
+                var responseMessage =  this.employeeBusiness.AddEmployeeData(UserModel);
                 if (responseMessage != null)
                 {
                     //Message For MSMQ.
-                    string message = "  Hello " + Convert.ToString(employeeModel.Firstname) + " " + Convert.ToString(employeeModel.Lastname) +
+                    string message = "  Hello " + Convert.ToString(UserModel.Firstname) + " " + Convert.ToString(UserModel.Lastname) +
                                      "\n Your " + "Registration Succesful" +
-                                     "\n Email :" + Convert.ToString(employeeModel.EmailId) +
-                                     "\n MobileNumber: " + Convert.ToString(employeeModel.MobileNumber) +
-                                     "\n CurrentAddress:  " + Convert.ToString(employeeModel.CurrentAddress) +
-                                     "\n Gender : " + Convert.ToString(employeeModel.Gender);
+                                     "\n Email :" + Convert.ToString(UserModel.EmailId) +
+                                     "\n MobileNumber: " + Convert.ToString(UserModel.MobileNumber) +
+                                     "\n CurrentAddress:  " + Convert.ToString(UserModel.CurrentAddress) +
+                                     "\n Gender : " + Convert.ToString(UserModel.Gender);
 
                     //Sending Message To MSMQ.
                     senderObject.Send(message);
