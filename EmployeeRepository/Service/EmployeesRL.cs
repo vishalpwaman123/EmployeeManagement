@@ -177,25 +177,29 @@ namespace RepositoryModel.Service
         {
             try
             {
-                SqlCommand sqlCommand = new SqlCommand("spUpdateEmployeeData", this.sqlConnectionVariable);
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@FirstName", employeeModel.Firstname);
-                sqlCommand.Parameters.AddWithValue("@LastName", employeeModel.Lastname);
-                sqlCommand.Parameters.AddWithValue("@EmailId", employeeModel.EmailId);
-                sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.mobileNumber);
-                sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
-                sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
-                this.sqlConnectionVariable.Open();
-                var response = sqlCommand.ExecuteNonQuery();
-                this.sqlConnectionVariable.Close();
-                if (response == -1)
+                if (!EmailChecking(employeeModel.EmailId))
                 {
-                    return GetSpecificEmployeeAllDetailes(employeeModel.EmailId); 
+                    SqlCommand sqlCommand = new SqlCommand("spUpdateEmployeeData", this.sqlConnectionVariable);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@FirstName", employeeModel.Firstname);
+                    sqlCommand.Parameters.AddWithValue("@LastName", employeeModel.Lastname);
+                    sqlCommand.Parameters.AddWithValue("@EmailId", employeeModel.EmailId);
+                    sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.mobileNumber);
+                    sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
+                    sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
+                    this.sqlConnectionVariable.Open();
+                    var response = sqlCommand.ExecuteNonQuery();
+                    this.sqlConnectionVariable.Close();
+                    if (response == -1)
+                    {
+                        return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
             catch (Exception exception)
             {
@@ -304,6 +308,7 @@ namespace RepositoryModel.Service
                 EmailId = sqlDataReader["EmailId"].ToString(); 
                 if(EmailId == gmailId)
                 {
+                    this.sqlConnectionVariable.Close();
                     return false;
                 }
             }

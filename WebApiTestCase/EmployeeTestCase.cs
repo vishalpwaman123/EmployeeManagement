@@ -100,6 +100,74 @@ namespace WebApiTestCase
         }
 
         [Fact]
+        public void GivenTestCase_WhenGetAllEmployeeFields_ShouldReturnokRequest()
+        {
+            try
+            {
+
+                var response = employeeController.GetAllEmployee();
+                Assert.IsType<OkObjectResult>(response);
+
+            }
+            catch (CustomeException exception)
+            {
+                Assert.Equal(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, exception.type);
+            }
+        }
+
+        [Fact]
+        public void GivenTestCase_WhenUpdateFields_ShouldReturnOkRequest()
+        {
+            try
+            {
+
+                REmployeeModel employeeModel = new REmployeeModel
+                {
+                    Firstname = "rahul",
+                    Lastname = "waman",
+                    EmailId = "rahul1@gmail.com",
+                    CurrentAddress = "kondhwa",
+                    Gender = "male",
+                    mobileNumber = 9881563158
+                };
+
+                var response = employeeController.UpdateEmployee(employeeModel);
+                Assert.IsType<OkObjectResult>(response);
+               
+            }
+            catch (CustomeException exception)
+            {
+                Assert.Equal(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, exception.type);
+            }
+        }
+
+        [Fact]
+        public void GivenTestCase_WhenUpdateFields_ShouldReturnBadRequest()
+        {
+            try
+            {
+
+                REmployeeModel employeeModel = new REmployeeModel
+                {
+                    Firstname = "rahul",
+                    Lastname = "wamankar",
+                    EmailId = "vishal1@gmail.com",
+                    CurrentAddress = "kondhwa",
+                    Gender = "male",
+                    mobileNumber = 9881563158
+                };
+
+                var response = employeeController.UpdateEmployee(employeeModel);
+                Assert.IsType<BadRequestObjectResult>(response);
+
+            }
+            catch (CustomeException exception)
+            {
+                Assert.Equal(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, exception.type);
+            }
+        }
+
+        [Fact]
         public void GivenTestCase_WhenNullFields_ShouldReturnBadRequest()
         {
             try

@@ -134,6 +134,7 @@ namespace SimpleApplication.Controllers
         {
             try
             {
+
                 var responseMessage =  this.employeeBusiness.ForgetPassword(forgetpasswordModel);
                 if (responseMessage == true)
                 {
@@ -142,11 +143,12 @@ namespace SimpleApplication.Controllers
                     //Message For MSMQ.
                     string message = "  Token : " + tokenString +
                                      "\n Email :" + Convert.ToString(forgetpasswordModel.EmailId);
-                                     
+                                       
                     //Sending Message To MSMQ.
                     senderObject.Send(message);
                     smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
-                    
+
+                    senderObject.clears();
                     string message1 = Convert.ToString(forgetpasswordModel.EmailId);
                     senderObject.Senders(message1);
 
@@ -181,7 +183,7 @@ namespace SimpleApplication.Controllers
                 var responseMessage = this.employeeBusiness.ResetPassword(resetPasswordModel, EmailId);
                 if (responseMessage == true)
                 {
-                    senderObject.clears();
+                    
                     bool Success = true;
                     var Message = "Reset Password SuccessFully";
                     return this.Ok(new { Success, Message });
