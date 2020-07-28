@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
+﻿
 namespace CommonModel.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+
+    /// <summary>
+    /// Define register user model class
+    /// </summary>
     public class RUserModel
     {
-
-
         /// <summary>
         /// define first name variable
         /// </summary> 

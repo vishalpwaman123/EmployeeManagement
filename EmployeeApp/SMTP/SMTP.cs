@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Net.Mail;
-//using MailKit.Net.Smtp;
-using MimeKit;
+﻿
 namespace EmployeeManagement.SMTP
 {
+    using System;
+    using System.Net;
+    using System.Net.Mail;
+    
     /// <summary>
     /// Class For Sending Email.
     /// </summary>
@@ -13,14 +13,13 @@ namespace EmployeeManagement.SMTP
         /// <summary>
         /// Function For Sending Email.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="mail"></param>
-        /// <param name="data"></param>
+        /// <param name="mail">Passing mail string</param>
+        /// <param name="data">Passing data string</param>
         public void SendEmail(string mail, string data)
         {
             try
             {
-                string link = "https://localhost:44324/api/User/ResetPassword";
+            string link = "https://localhost:44324/api/User/ResetPassword";
             MailMessage message = new MailMessage("1001thebeast1001@gmail.com", mail);
             message.Subject = " Forget Password";
             message.Body = string.Format("Hello : <h1>{0}</h1> is Your Email id <br/> your Token is <h1>{1}</h1> <br/> Reset App Link is <a href={2}><h1>Reset Password</h1></a>", mail, data,link);
@@ -41,10 +40,6 @@ namespace EmployeeManagement.SMTP
             {
                 throw new Exception(e.Message);
             }
-
-
-
-
         }
     }
 }

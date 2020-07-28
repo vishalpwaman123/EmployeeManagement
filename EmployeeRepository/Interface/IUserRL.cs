@@ -33,10 +33,26 @@ namespace RepositoryModel.Interface
         /// <returns>Return list</returns>
         UserModel UserLogin(UserMode employeeModel);
 
+        /// <summary>
+        /// Define get special employee all detailes method
+        /// </summary>
+        /// <param name="EmailId">Passing email sting</param>
+        /// <returns>return user model</returns>
         UserModel GetSpecificEmployeeAllDetailes(string EmailId);
 
+        /// <summary>
+        /// Define forget password method
+        /// </summary>
+        /// <param name="forgetpasswordModel">Passing forget password model object</param>
+        /// <returns>return boolean value</returns>
         bool ForgetPassword(ForgetPasswordModel forgetpasswordModel);
 
+        /// <summary>
+        /// Define reset password method
+        /// </summary>
+        /// <param name="resetPasswordModel">passing reset password model object</param>
+        /// <param name="EmailId">passing email id string</param>
+        /// <returns>return boolean value</returns>
         bool ResetPassword(ResetPasswordModel resetPasswordModel, string EmailId);
 
     }

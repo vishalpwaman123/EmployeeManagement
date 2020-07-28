@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
+﻿
 namespace CommonModel.RequestModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+
+    /// <summary>
+    /// Define forget password model class
+    /// </summary>
     public class ForgetPasswordModel
     {
 

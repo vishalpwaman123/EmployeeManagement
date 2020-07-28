@@ -1,25 +1,41 @@
-using BusinessModel.Interface;
-using BusinessModel.Service;
-using CommonModel.Exceptions;
-using CommonModel.Models;
-using EmployeeApp.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using RepositoryModel.Interface;
-using RepositoryModel.Service;
-using SimpleApplication.Controllers;
-using System;
-using System.Linq.Expressions;
-using Xunit;
+
 
 namespace WebApiTestCase
 {
+    using BusinessModel.Interface;
+    using BusinessModel.Service;
+    using CommonModel.Exceptions;
+    using CommonModel.Models;
+    using EmployeeApp.Controllers;
+    using Microsoft.AspNetCore.Mvc;
+    using RepositoryModel.Interface;
+    using RepositoryModel.Service;
+    using System;
+    using Xunit;
+
+    /// <summary>
+    /// Declared employee test case class
+    /// </summary>
     public class EmployeeTestCase
     {
+        /// <summary>
+        /// Define employee controller variable
+        /// </summary>
         EmployeesController employeeController;
+
+        /// <summary>
+        /// Define employee business variable
+        /// </summary>
         IEmployeeBL business;
+
+        /// <summary>
+        /// Define employee respository variable
+        /// </summary>
         IEmployeeRL repository;
 
-
+        /// <summary>
+        /// Declare employee test case constructor
+        /// </summary>
         public EmployeeTestCase()
         {
             repository = new EmployeesRL();
@@ -27,10 +43,12 @@ namespace WebApiTestCase
             employeeController = new EmployeesController(business);
         }
 
+        /// <summary>
+        /// Define Given Test Case When All Valid Fields Should Return Ok Request method 
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenAllValidFields_ShouldReturnOkRequest()
         {
-
             try
             {
                 REmployeeModel EmployeeModel = new REmployeeModel();
@@ -51,10 +69,12 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Same EmailId Fields Should Return Ok Request method 
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenSameEmailIdFields_ShouldReturnOkRequest()
         {
-
             try
             {
                 REmployeeModel EmployeeModel = new REmployeeModel();
@@ -67,7 +87,6 @@ namespace WebApiTestCase
 
                 var response = employeeController.AddEmployeeData(EmployeeModel);
                 Assert.IsType<OkObjectResult>(response);
-
             }
             catch (Exception exception)
             {
@@ -75,6 +94,9 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Empty String Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenEmptyStringFields_ShouldReturnBadRequest()
         {
@@ -99,15 +121,16 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Get All Employee Fields Should Return ok Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenGetAllEmployeeFields_ShouldReturnokRequest()
         {
             try
             {
-
                 var response = employeeController.GetAllEmployee();
                 Assert.IsType<OkObjectResult>(response);
-
             }
             catch (CustomeException exception)
             {
@@ -115,12 +138,14 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Update Fields Should Return Ok Request method 
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenUpdateFields_ShouldReturnOkRequest()
         {
             try
             {
-
                 REmployeeModel employeeModel = new REmployeeModel
                 {
                     Firstname = "rahul",
@@ -141,12 +166,14 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Update Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenUpdateFields_ShouldReturnBadRequest()
         {
             try
             {
-
                 REmployeeModel employeeModel = new REmployeeModel
                 {
                     Firstname = "rahul",
@@ -167,12 +194,14 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Null Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenNullFields_ShouldReturnBadRequest()
         {
             try
             {
-
                 REmployeeModel employeeModel = new REmployeeModel
                 {
                     Firstname = null,
@@ -193,10 +222,12 @@ namespace WebApiTestCase
 
         }
 
+        /// <summary>
+        /// Define Given Test Case When Invalid First Name Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenInvalidFirstNameFields_ShouldReturnBadRequest()
         {
-           
             try
             {
 
@@ -216,13 +247,14 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Invalid Last Name Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenInvalidLastNameFields_ShouldReturnBadRequest()
         {
-            string expected = "Last Name is required";
             try
             {
-
                 REmployeeModel employeeModel = new REmployeeModel();
                 employeeModel.Firstname = "Vishal";
                 employeeModel.Lastname = "";
@@ -240,13 +272,14 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Invalid EmailId Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenInvalidEmailIdFields_ShouldReturnBadRequest()
         {
-           
             try
             {
-
                 REmployeeModel employeeModel = new REmployeeModel();
                 employeeModel.Firstname = "Vishal";
                 employeeModel.Lastname = "Waman";
@@ -264,6 +297,9 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Invalid Current Address Fields Should Return Bad Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenInvalidCurrentAddressFields_ShouldReturnBadRequest()
         {
@@ -287,10 +323,12 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Invalid Gender Fields Should Return Bad Request Method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenInvalidGenderFields_ShouldReturnBadRequest()
         {
-
             try
             {
                 REmployeeModel employeeModel = new REmployeeModel();
@@ -310,6 +348,9 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Invalid Mobile Number Fields Should Return Bad Request Method 
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenInvalidMobileNumberFields_ShouldReturnBadRequest()
         {
@@ -333,6 +374,9 @@ namespace WebApiTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When Valid User registration Fields Should Return ok Request method
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenValidUserregistrationFields_ShouldReturnokRequest()
         {
@@ -355,6 +399,5 @@ namespace WebApiTestCase
                 Assert.IsType<BadRequestObjectResult>(exception);
             }
         }
-
     }
 }

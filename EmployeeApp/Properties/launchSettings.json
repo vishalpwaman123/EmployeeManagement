@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "EmployeeApp": {
+    "EmployeeApp": { 
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

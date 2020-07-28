@@ -33,8 +33,19 @@ namespace BusinessModel.Interface
         /// <returns>return list</returns>
         UserModel UserLogin(UserMode employeeModel);
 
+        /// <summary>
+        /// Define Forget password method
+        /// </summary>
+        /// <param name="forgetpasswordModel">passing forget password model object</param>
+        /// <returns>return boolean value</returns>
         bool ForgetPassword(ForgetPasswordModel forgetpasswordModel);
 
+        /// <summary>
+        /// Define reset password method 
+        /// </summary>
+        /// <param name="resetPasswordModel">passing reset password model object</param>
+        /// <param name="EmailId">Passing email id string</param>
+        /// <returns>return boolean value</returns>
         bool ResetPassword(ResetPasswordModel resetPasswordModel , string EmailId);
 
     }

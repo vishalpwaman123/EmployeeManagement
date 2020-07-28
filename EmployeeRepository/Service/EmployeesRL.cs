@@ -22,30 +22,29 @@ namespace RepositoryModel.Service
     /// </summary>
     public class EmployeesRL : IEmployeeRL
     {
-
+        /// <summary>
+        /// Define sql connection variable
+        /// </summary>
         private SqlConnection sqlConnectionVariable;
 
+        /// <summary>
+        /// Define constructor
+        /// </summary>
         public EmployeesRL()
         {
             var configuration = this.GetConfiguration();
             this.sqlConnectionVariable = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionVariable").Value);
         }
 
+        /// <summary>
+        /// Define information configuration method
+        /// </summary>
+        /// <returns>return builder</returns>
         public IConfigurationRoot GetConfiguration()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             return builder.Build();
         }
-
-        /// <summary>
-        /// Define connection variable
-        /// </summary>
-        //private static readonly string ConnectionVariable = "Server=DESKTOP-OF8D1IH;Database=EmployeeDatabase;Trusted_Connection=true;MultipleActiveResultSets=True";
-
-        /// <summary>
-        /// Define sql connection variable
-        /// </summary>
-        //SqlConnection sqlConnectionVariable = new SqlConnection(ConnectionVariable);
 
         /// <summary>
         /// declaration of add employee method
@@ -93,8 +92,6 @@ namespace RepositoryModel.Service
             }
        
         }
-
-
 
         /// <summary>
         /// Declaration of get all employee method
@@ -207,9 +204,6 @@ namespace RepositoryModel.Service
             }
         }
 
-        
-        
-
         /// <summary>
         /// Declaration of employee details method
         /// </summary>
@@ -254,7 +248,11 @@ namespace RepositoryModel.Service
             }
         }
 
-
+        /// <summary>
+        /// Define get specific employee all detailes method
+        /// </summary>
+        /// <param name="EmailId">Passing email id string</param>
+        /// <returns>return employee model object</returns>
         public EmployeeModel GetSpecificEmployeeAllDetailes(string EmailId)
         {
             try
@@ -295,7 +293,12 @@ namespace RepositoryModel.Service
             }
         }
 
-        public bool EmailChecking(string gmailId)
+        /// <summary>
+        /// Declare email checking method
+        /// </summary>
+        /// <param name="emailId">Passing email id string</param>
+        /// <returns>return boolean value</returns>
+        public bool EmailChecking(string emailId)
         {
             string EmailId;
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
@@ -306,7 +309,7 @@ namespace RepositoryModel.Service
             while (sqlDataReader.Read())
             {
                 EmailId = sqlDataReader["EmailId"].ToString(); 
-                if(EmailId == gmailId)
+                if(EmailId == emailId)
                 {
                     this.sqlConnectionVariable.Close();
                     return false;

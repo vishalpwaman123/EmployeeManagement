@@ -59,8 +59,14 @@ namespace CommonModel.Models
         [RegularExpression("^(?:m|M|male|Male|f|F|female|Female)$", ErrorMessage = "Not valid Gender eg : Male Or Female")]
         public string Gender { get; set; }
 
+        /// <summary>
+        /// Define day and time variable
+        /// </summary>
         public string DayAndTime { get; set; }
 
+        /// <summary>
+        /// Define token variable
+        /// </summary>
         public string Token;
     }
 }

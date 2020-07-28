@@ -1,26 +1,45 @@
-﻿using BusinessModel.Interface;
-using BusinessModel.Service;
-using CommonModel.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using RepositoryModel.Interface;
-using RepositoryModel.Service;
-using SimpleApplication.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-
+﻿
 namespace EmployeeManagementTestCase
 {
+    using BusinessModel.Interface;
+    using BusinessModel.Service;
+    using CommonModel.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using RepositoryModel.Interface;
+    using RepositoryModel.Service;
+    using SimpleApplication.Controllers;
+    using System;
+    using Xunit;
+
+    /// <summary>
+    /// Define user test case class
+    /// </summary>
     public class UserTestCase
     {
+        /// <summary>
+        /// Define configuration variable
+        /// </summary>
         private IConfiguration configuration;
 
+        /// <summary>
+        /// Define User controller variable
+        /// </summary>
         UserController userController;
+
+        /// <summary>
+        /// Define user business variable 
+        /// </summary>
         IUserBL business;
+
+        /// <summary>
+        /// Define user respository variable
+        /// </summary>
         IUserRL repository;
 
+        /// <summary>
+        /// Define User test case constructor
+        /// </summary>
         public UserTestCase()
         {
             repository = new UserRL();
@@ -28,10 +47,12 @@ namespace EmployeeManagementTestCase
             userController = new UserController(business, configuration);
         }
 
+        /// <summary>
+        /// Declare Given Test Case When All Valid Fields Should Return Ok Request test case 
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenAllValidFields_ShouldReturnOkRequest()
         {
-
             try
             {
                 RUserModel UserModel = new RUserModel();
@@ -53,6 +74,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When All Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenAllEmptyFields_ShouldReturnBadRequest()
         {
@@ -78,6 +102,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When All Null Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenAllNullFields_ShouldReturnBadRequest()
         {
@@ -103,6 +130,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When First Name Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenFirstNameEmptyFields_ShouldReturnBadRequest()
         {
@@ -128,6 +158,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When Last Name Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenLastNameEmptyFields_ShouldReturnBadRequest()
         {
@@ -153,6 +186,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When EmailId Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenEmailIdEmptyFields_ShouldReturnBadRequest()
         {
@@ -178,6 +214,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When Current Address Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenCurrentAddressEmptyFields_ShouldReturnBadRequest()
         {
@@ -203,6 +242,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When Gender Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenGenderEmptyFields_ShouldReturnBadRequest()
         {
@@ -228,6 +270,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When Mobile Number Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenMobileNumberEmptyFields_ShouldReturnBadRequest()
         {
@@ -253,6 +298,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Define Given Test Case When User Password Empty Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenUserPasswordEmptyFields_ShouldReturnBadRequest()
         {
@@ -278,6 +326,9 @@ namespace EmployeeManagementTestCase
             }
         }
 
+        /// <summary>
+        /// Declare Given Test Case When Same EmailId Fields Should Return Bad Request
+        /// </summary>
         [Fact]
         public void GivenTestCase_WhenSameEmailIdFields_ShouldReturnBadRequest()
         {
@@ -302,6 +353,5 @@ namespace EmployeeManagementTestCase
                 Assert.IsType<BadRequestObjectResult>(exception);
             }
         }
-
     }
 }

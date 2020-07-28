@@ -42,8 +42,16 @@ namespace SimpleApplication.Controllers
             this.configuration = configuration;
         }
 
+        /// <summary>
+        /// Declare Sender object
+        /// </summary>
         Sender senderObject = new Sender();
+
+        /// <summary>
+        /// Declare smtp object
+        /// </summary>
         SMTP smtpObject = new SMTP();
+
         /// <summary>
         /// Declaration of add employee method
         /// </summary>
@@ -127,6 +135,11 @@ namespace SimpleApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// Declare forget password method
+        /// </summary>
+        /// <param name="forgetpasswordModel">Passing forget password model object</param>
+        /// <returns>passing action result</returns>
         [AllowAnonymous]
         [Route("ForgetPassword")]
         [HttpPost]
@@ -172,6 +185,11 @@ namespace SimpleApplication.Controllers
             
         }
 
+        /// <summary>
+        /// Declare reset password method
+        /// </summary>
+        /// <param name="resetPasswordModel">Passing reset password model objet</param>
+        /// <returns>return action result</returns>
         [Authorize]
         [Route("ResetPassword")]
         [HttpPost]
@@ -204,7 +222,6 @@ namespace SimpleApplication.Controllers
 
         }
 
-
         /// <summary>
         /// Function For JsonToken Generation.
         /// </summary>
@@ -225,6 +242,5 @@ namespace SimpleApplication.Controllers
                             signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

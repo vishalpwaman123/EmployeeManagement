@@ -33,6 +33,10 @@ namespace RepositoryModel.Service
             this.sqlConnectionVariable = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionVariable").Value);
         }
 
+        /// <summary>
+        /// Define information configuration method
+        /// </summary>
+        /// <returns>return builder</returns>
         public IConfigurationRoot GetConfiguration()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -199,7 +203,11 @@ namespace RepositoryModel.Service
             var reader = new StreamReader(cryptoStream);
             return reader.ReadToEnd();
         }
-
+        /// <summary>
+        /// Declare get specific employee all detailes method
+        /// </summary>
+        /// <param name="EmailId">Passing email id string</param>
+        /// <returns>return user model object</returns>
         public UserModel GetSpecificEmployeeAllDetailes(string EmailId)
         {
             try
@@ -234,10 +242,14 @@ namespace RepositoryModel.Service
             {
                 throw new Exception(e.Message);
             }
-            
         }
 
-        public bool EmailChecking(string gmailId)
+        /// <summary>
+        /// Declare email checking method
+        /// </summary>
+        /// <param name="emailId">Passing email id string</param>
+        /// <returns>return boolean value</returns>
+        public bool EmailChecking(string emailId)
         {
             string EmailId;
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
@@ -248,7 +260,7 @@ namespace RepositoryModel.Service
             while (sqlDataReader.Read())
             {
                 EmailId = sqlDataReader["EmailId"].ToString();
-                if (EmailId == gmailId)
+                if (EmailId == emailId)
                 {
                     return false;
                 }
@@ -283,6 +295,12 @@ namespace RepositoryModel.Service
             }
         }
 
+        /// <summary>
+        /// Declare reset password method
+        /// </summary>
+        /// <param name="resetPasswordModel">Passing reset password model object</param>
+        /// <param name="EmailId">Passing email id string</param>
+        /// <returns>Return boolean value</returns>
         public bool ResetPassword(ResetPasswordModel resetPasswordModel, string EmailId )
         {
             try

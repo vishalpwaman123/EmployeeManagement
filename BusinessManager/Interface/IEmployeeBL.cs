@@ -51,6 +51,11 @@ namespace BusinessModel.Interface
         /// <returns>return employee model object</returns>
         EmployeeModel GetSpecificEmployeeDetails(int Id);
 
+        /// <summary>
+        /// Define add Employee method
+        /// </summary>
+        /// <param name="employeeModel">Passing employee model object</param>
+        /// <returns>return Employee model</returns>
         EmployeeModel AddEmployeeData(REmployeeModel employeeModel);
     }
 }
