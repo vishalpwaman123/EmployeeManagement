@@ -8,6 +8,7 @@ namespace WebApiTestCase
     using CommonModel.Models;
     using EmployeeApp.Controllers;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
     using RepositoryModel.Interface;
     using RepositoryModel.Service;
     using System;
@@ -18,6 +19,8 @@ namespace WebApiTestCase
     /// </summary>
     public class EmployeeTestCase
     {
+        private readonly IDistributedCache distributedCache;
+
         /// <summary>
         /// Define employee controller variable
         /// </summary>
@@ -40,7 +43,7 @@ namespace WebApiTestCase
         {
             repository = new EmployeesRL();
             business = new EmployeeBL(repository);
-            employeeController = new EmployeesController(business);
+            employeeController = new EmployeesController(business, distributedCache);
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ namespace BusinessModel.Interface
 {
     using CommonModel.Models;
     using CommonModel.RequestModels;
+    using CommonModel.ResponseModels;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -24,7 +25,7 @@ namespace BusinessModel.Interface
         /// </summary>
         /// <param name="employee">passing registration model object</param>
         /// <returns>return boolean value</returns>
-        UserModel AddEmployeeData(RUserModel employee);
+        UserResponseModel AddEmployeeData(RUserModel employee);
 
         /// <summary>
         /// Define employye login method

@@ -27,7 +27,7 @@ namespace RepositoryModel.Interface
         /// define get all employee method
         /// </summary>
         /// <returns>return list</returns>
-        IList<EmployeeModel> GetAllEmployee();
+        List<EmployeeModel> GetAllEmployee();
 
         /// <summary>
         /// Define delete employee method

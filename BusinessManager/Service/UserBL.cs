@@ -11,6 +11,7 @@ namespace BusinessModel.Service
     using CommonModel.Exceptions;
     using CommonModel.Models;
     using CommonModel.RequestModels;
+    using CommonModel.ResponseModels;
     using RepositoryModel.Interface;
     using System;
     using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace BusinessModel.Service
         /// </summary>
         /// <param name="employeeModel">passing registration model object</param>
         /// <returns>return bool</returns>
-        public UserModel AddEmployeeData(RUserModel UserModel)
+        public UserResponseModel AddEmployeeData(RUserModel UserModel)
         {
             try
             {

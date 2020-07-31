@@ -11,17 +11,19 @@ namespace CommonModel.Models
     /// </summary>
     public class RUserModel
     {
+        
         /// <summary>
         /// define first name variable
         /// </summary> 
         [Required]
-        //[RegularExpression("([a-zA-Z]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
+        [RegularExpression("([a-zA-Z]{3,})$", ErrorMessage = "First Name is not valid")]
         public string Firstname { get; set; }
 
         /// <summary>
         /// define last name variable
         /// </summary>
         [Required]
+        [RegularExpression("([a-zA-Z]{3,})$", ErrorMessage = "Last Name is not valid")]
         public string Lastname { get; set; }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace CommonModel.Models
         /// <summary>
         /// define user password variable
         /// </summary>
-        [RegularExpression("^.{6,30}$", ErrorMessage = "Password Length should be between 6 to 15")]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,10}$", ErrorMessage = "Password Length should be between 6 to 15")]
         [Required]
         public string UserPassword { get; set; }
 
@@ -49,6 +51,7 @@ namespace CommonModel.Models
         /// define current address variable
         /// </summary>
         [Required]
+        [RegularExpression("([a-zA-Z]{3,})$", ErrorMessage = "Current Address is not valid")]
         public string CurrentAddress { get; set; }
 
         /// <summary>

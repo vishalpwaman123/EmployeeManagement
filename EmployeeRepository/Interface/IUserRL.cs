@@ -9,6 +9,7 @@ namespace RepositoryModel.Interface
 {
     using CommonModel.Models;
     using CommonModel.RequestModels;
+    using CommonModel.ResponseModels;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -24,7 +25,7 @@ namespace RepositoryModel.Interface
         /// </summary>
         /// <param name="employeeModel">Passing registration model object</param>
         /// <returns>return boolean value</returns>
-        UserModel AddEmployeeData(RUserModel employeeModel);
+        UserResponseModel AddEmployeeData(RUserModel employeeModel);
 
         /// <summary>
         /// Define employee login method
@@ -38,7 +39,7 @@ namespace RepositoryModel.Interface
         /// </summary>
         /// <param name="EmailId">Passing email sting</param>
         /// <returns>return user model</returns>
-        UserModel GetSpecificEmployeeAllDetailes(string EmailId);
+        UserResponseModel GetSpecificEmployeeAllDetailes(string EmailId);
 
         /// <summary>
         /// Define forget password method

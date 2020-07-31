@@ -9,6 +9,7 @@ namespace RepositoryModel.Service
 {
     using CommonModel.Models;
     using CommonModel.RequestModels;
+    using CommonModel.ResponseModels;
     using Microsoft.Extensions.Configuration;
     using RepositoryModel.Interface;
     using System;
@@ -25,6 +26,9 @@ namespace RepositoryModel.Service
     /// </summary>
     public class UserRL : IUserRL
     {
+        /// <summary>
+        /// Database Connection Variable
+        /// </summary>
         private SqlConnection sqlConnectionVariable;
 
         public UserRL()
@@ -48,27 +52,17 @@ namespace RepositoryModel.Service
         private int FlagsAttribute=1;
 
         /// <summary>
-        /// Define connection variable
-        /// </summary>
-        //private static readonly string ConnectionVariable = "Server=DESKTOP-OF8D1IH;Database=EmployeeDatabase;Trusted_Connection=true;MultipleActiveResultSets=True";
-        
-        /// <summary>
-        /// Define sql connection variable
-        /// </summary>
-        //SqlConnection sqlConnectionVariable = new SqlConnection(ConnectionVariable);
-        
-        /// <summary>
         /// Declaration of add UserInstance data method
         /// </summary>
         /// <param name="employeeModel">Passing UserInstance model object</param>
         /// <returns>return boolean value</returns>
-        public UserModel AddEmployeeData(RUserModel UserModel)
+        public UserResponseModel AddEmployeeData(RUserModel UserModel)
         {
             try              
             {
                 if (EmailChecking(UserModel.EmailId))
                 {
-                    IList<UserModel> employeeModelsList = new List<UserModel>();
+    
                     UserModel.UserPassword = Encrypt(UserModel.UserPassword).ToString();
                     SqlCommand sqlCommand = new SqlCommand("spAddRegistrationData", this.sqlConnectionVariable);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -108,9 +102,9 @@ namespace RepositoryModel.Service
         /// <summary>
         /// Declaration UserInstance login method
         /// </summary>
-        /// <param name="employeeModel">Passing registration model object</param>
+        /// <param name="UserModel">Passing registration model object</param>
         /// <returns>Return list</returns>
-        public UserModel UserLogin(UserMode employeeModel)
+        public UserModel UserLogin(UserMode UserModel)
         {
             try
             {
@@ -118,25 +112,24 @@ namespace RepositoryModel.Service
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 this.sqlConnectionVariable.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                UserModel employeeModel1 = new UserModel();
+                UserModel UserModels = new UserModel();
                 while (sqlDataReader.Read())
                 {
                     
-                    employeeModel1.EmailId = sqlDataReader["EmailId"].ToString();
-                    employeeModel1.UserPassword = Decrypt(sqlDataReader["UserPassword"].ToString());
+                    UserModels.EmailId = sqlDataReader["EmailId"].ToString();
+                    string UserPassword = Decrypt(sqlDataReader["UserPassword"].ToString());
                     
-                    if (employeeModel.EmailId == employeeModel1.EmailId )
+                    if (UserModel.EmailId == UserModels.EmailId )
                     {
-                        if (employeeModel.UserPassword == employeeModel1.UserPassword)
+                        if (UserModel.UserPassword == UserPassword)
                         {
-                            employeeModel1.UserPassword = "NULL";
-                            employeeModel1.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
-                            employeeModel1.Firstname = sqlDataReader["FirstName"].ToString();
-                            employeeModel1.Lastname = sqlDataReader["LastName"].ToString();
-                            employeeModel1.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
-                            employeeModel1.MobileNumber = sqlDataReader["MobileAddress"].ToString();
-                            employeeModel1.Gender = sqlDataReader["Gender"].ToString();
-                            employeeModel1.DayAndTime = sqlDataReader["DayAndTime"].ToString();
+                            UserModels.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
+                            UserModels.Firstname = sqlDataReader["FirstName"].ToString();
+                            UserModels.Lastname = sqlDataReader["LastName"].ToString();
+                            UserModels.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
+                            UserModels.MobileNumber = sqlDataReader["MobileAddress"].ToString();
+                            UserModels.Gender = sqlDataReader["Gender"].ToString();
+                            UserModels.DayAndTime = sqlDataReader["DayAndTime"].ToString();
                             FlagsAttribute = 0;
                             break;
                         }
@@ -146,11 +139,11 @@ namespace RepositoryModel.Service
                 this.sqlConnectionVariable.Close();
                 if (FlagsAttribute == 0)
                 {
-                    return employeeModel1;
+                    return UserModels;
                 }
 
-                employeeModel1 = null;
-                return employeeModel1;
+                UserModels = null;
+                return UserModels;
             }
             catch (Exception exception)
             {
@@ -204,15 +197,15 @@ namespace RepositoryModel.Service
             return reader.ReadToEnd();
         }
         /// <summary>
-        /// Declare get specific employee all detailes method
+        /// Declare get specific UserData all detailes method
         /// </summary>
         /// <param name="EmailId">Passing email id string</param>
         /// <returns>return user model object</returns>
-        public UserModel GetSpecificEmployeeAllDetailes(string EmailId)
+        public UserResponseModel GetSpecificEmployeeAllDetailes(string EmailId)
         {
             try
             {
-                UserModel employee = new UserModel();
+                UserResponseModel UserData = new UserResponseModel();
 
                 SqlCommand sqlCommand = new SqlCommand("spGetAllUserData", this.sqlConnectionVariable);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -222,21 +215,21 @@ namespace RepositoryModel.Service
                 while (sqlDataReader.Read())
                 {
 
-                    employee.EmailId = sqlDataReader["EmailId"].ToString();
-                    if (EmailId == employee.EmailId)
+                    UserData.EmailId = sqlDataReader["EmailId"].ToString();
+                    if (EmailId == UserData.EmailId)
                     {
-                        employee.Firstname = sqlDataReader["FirstName"].ToString();
-                        employee.Lastname = sqlDataReader["LastName"].ToString();
-                        employee.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
-                        employee.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
-                        employee.MobileNumber = sqlDataReader["MobileAddress"].ToString();
-                        employee.Gender = sqlDataReader["Gender"].ToString();
-                        employee.DayAndTime = sqlDataReader["DayAndTime"].ToString();
+                        UserData.Firstname = sqlDataReader["FirstName"].ToString();
+                        UserData.Lastname = sqlDataReader["LastName"].ToString();
+                        UserData.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
+                        UserData.CurrentAddress = sqlDataReader["LocalAddress"].ToString();
+                        UserData.MobileNumber = sqlDataReader["MobileAddress"].ToString();
+                        UserData.Gender = sqlDataReader["Gender"].ToString();
+                        UserData.DayAndTime = sqlDataReader["DayAndTime"].ToString();
                         break;
                     }
                 }
                 this.sqlConnectionVariable.Close();
-                return employee;
+                return UserData;
             }
             catch (Exception e)
             {

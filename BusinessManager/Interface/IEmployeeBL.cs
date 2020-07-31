@@ -28,7 +28,7 @@ namespace BusinessModel.Interface
         /// Define fet all employee method
         /// </summary>
         /// <returns>return list</returns>
-        IList<EmployeeModel> GetAllEmployee();
+        List<EmployeeModel> GetAllEmployee();
 
         /// <summary>
         /// Define delete employee method

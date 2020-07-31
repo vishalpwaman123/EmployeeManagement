@@ -32,7 +32,10 @@ namespace EmployeeApp
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Employee Management API", Description = "Swagger Employee Management API" });
@@ -82,9 +85,7 @@ namespace EmployeeApp
             {
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
-            
             app.UseSwagger();
             app.UseAuthentication();
             app.UseSwaggerUI(

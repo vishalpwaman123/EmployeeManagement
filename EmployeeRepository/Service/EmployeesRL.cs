@@ -97,11 +97,11 @@ namespace RepositoryModel.Service
         /// Declaration of get all employee method
         /// </summary>
         /// <returns>return list</returns>
-        public IList<EmployeeModel> GetAllEmployee()
+        public List<EmployeeModel> GetAllEmployee()
         {
             try
             {
-                IList<EmployeeModel> employeeModelsList = new List<EmployeeModel>();
+                List<EmployeeModel> employeeModelsList = new List<EmployeeModel>();
                 SqlCommand sqlCommand = new SqlCommand("spgetAllEmployee", this.sqlConnectionVariable);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 this.sqlConnectionVariable.Open();

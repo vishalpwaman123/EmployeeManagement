@@ -15,38 +15,36 @@ namespace CommonModel.Models
         /// define first name variable
         /// </summary>
         /// 
-        [Required(ErrorMessage = "First Name is required")]
-        /*[StringLength(maximumLength: 20, MinimumLength = 3,
-         ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]*/
+        [Required]
+        [RegularExpression("([a-zA-Z]{3,})$", ErrorMessage = "First Name is not valid")]
         public string Firstname { get; set; }
 
         /// <summary>
         /// define last name variable
         /// </summary>
-        [Required(ErrorMessage = "Last Name is required")]
-        /*[StringLength(maximumLength: 20, MinimumLength = 3,
-         ErrorMessage = "The property {0} should have {1} maximum characters and {2} minimum characters")]*/
+        [Required]
+        [RegularExpression("([a-zA-Z]{3,})$", ErrorMessage = "Last Name is not valid")]
         public string Lastname { get; set; }
 
         /// <summary>
         /// define email id variable
         /// </summary>
-        [Required(ErrorMessage = "EmailId is not valid")]
-        [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$")]
+        [Required]
+        [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
         public string EmailId { get; set; }
 
         /// <summary>
         /// define mobile number variable
         /// </summary>
-        //[RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
-        [Required(ErrorMessage = "Mobile Number is not valid")]
+        [Required]
+        [RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
         public Int64 mobileNumber { get; set; }
 
         /// <summary>
         /// define current address variable
         /// </summary>
         [Required]
-        [RegularExpression("([a-zA-Z]{2,})$", ErrorMessage = "City is not valid")]
+        [RegularExpression("([a-zA-Z]{3,})$", ErrorMessage = "Current Address is not valid")]
         public string CurrentAddress { get; set; }
 
         /// <summary>

@@ -80,7 +80,7 @@ namespace BusinessModel.Service
         /// Declaration of get all employee method
         /// </summary>
         /// <returns>return list</returns>
-        public IList<EmployeeModel> GetAllEmployee()
+        public List<EmployeeModel> GetAllEmployee()
         {
             try
             {

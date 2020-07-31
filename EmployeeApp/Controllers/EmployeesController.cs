@@ -8,12 +8,16 @@
 namespace EmployeeApp.Controllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Text;
     using System.Threading.Tasks;
     using BusinessModel.Interface;
     using CommonModel.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Define Class
@@ -22,6 +26,8 @@ namespace EmployeeApp.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+
+        private readonly IDistributedCache distributedCache;
 
         /// <summary>
         /// Define business interface object
@@ -32,9 +38,11 @@ namespace EmployeeApp.Controllers
         /// Define Constructor
         /// </summary>
         /// <param name="employeeBusiness"></param>
-        public EmployeesController(IEmployeeBL employeeBusiness)
+        public EmployeesController(IEmployeeBL employeeBusiness, IDistributedCache distributedCache)
         {
             this.employeeBusiness = employeeBusiness;
+            this.distributedCache = distributedCache;
+
         }
 
         /// <summary>
@@ -80,11 +88,43 @@ namespace EmployeeApp.Controllers
         {
             try
             {
-                var responseMessage = this.employeeBusiness.GetAllEmployee();
-                bool Success = true;
-                var Message = " Employee Data Found Sucessfully ";
-                return this.Ok(new { Success, Message , responseMessage });
+                List<EmployeeModel> employees = null;
 
+                //Variables For Cache.
+                string cacheKey = "employees";
+                string serializedList;
+
+                var encodedList = distributedCache.Get(cacheKey);
+
+                if (encodedList != null)
+                {
+                    serializedList = Encoding.UTF8.GetString(encodedList);
+                    employees = JsonConvert.DeserializeObject<List<EmployeeModel>>(serializedList);
+                }
+                else
+                {
+                    employees = this.employeeBusiness.GetAllEmployee();
+                    serializedList = JsonConvert.SerializeObject(employees);
+                    encodedList = Encoding.UTF8.GetBytes(serializedList);
+                    var options = new DistributedCacheEntryOptions()
+                                      .SetSlidingExpiration(TimeSpan.FromMinutes(20))
+                                      .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
+                    distributedCache.Set(cacheKey, encodedList, options);
+                }
+
+                //var responseMessage = this.employeeBusiness.GetAllEmployee();
+                if (employees != null)
+                {
+                    bool Success = true;
+                    var Message = " Employee Data Fetch Sucessfully ";
+                    return this.Ok(new { Success, Message, data = employees });
+                }
+                else
+                {
+                    bool Success = false;
+                    var Message = " Failed Fetch Employee Data ";
+                    return this.BadRequest(new { Success, Message });
+                }
             }
             catch (Exception e)
             {

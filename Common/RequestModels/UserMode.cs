@@ -23,7 +23,7 @@ namespace CommonModel.Models
         /// define user password variable
         /// </summary>
         [Required]
-        [RegularExpression("^.{3,30}$", ErrorMessage = "Password Length should be between 8 to 15")]
+        //[RegularExpression("^.{3,30}$", ErrorMessage = "Password Length should be between 8 to 15")]
         public string UserPassword { get; set; }
 
     }

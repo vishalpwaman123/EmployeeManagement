@@ -1,19 +1,15 @@
-﻿//-------------------------------------------------------------------------
-// <copyright file="UserModel.cs" company="BridgeLab">
-//      Copyright (c) Company. All rights reserved.
-// </copyright>
-// <author>Vishal Waman</author>
-//-------------------------------------------------------------------------
+﻿
 
-namespace CommonModel.Models
+namespace CommonModel.ResponseModels
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Text;
 
-    /// <summary>
-    /// Define class
-    /// </summary>
-    public class UserModel
+    public class UserResponseModel
     {
+
         /// <summary>
         /// define employee id variable
         /// </summary>
@@ -32,13 +28,13 @@ namespace CommonModel.Models
         /// <summary>
         /// define employee id variable
         /// </summary>
-        [RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
+        //[RegularExpression("^[0-9a-zA-Z]+([._+-][0-9a-zA-Z]+)*@[0-9a-zA-Z]+.[a-zA-Z]{2,4}([.][a-zA-Z]{2,3})?$", ErrorMessage = "EmailId is not valid")]
         public string EmailId { get; set; }
 
         /// <summary>
         /// define mobile number variable
         /// </summary>
-        [RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
+        //[RegularExpression("([1-9]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
         public string MobileNumber { get; set; }
 
         /// <summary>
@@ -49,7 +45,7 @@ namespace CommonModel.Models
         /// <summary>
         /// define gender variable
         /// </summary>
-        [RegularExpression("^(?:m|M|male|Male|f|F|female|Female)$", ErrorMessage = "Not valid Gender eg : Male Or Female")]
+        //[RegularExpression("^(?:m|M|male|Male|f|F|female|Female)$", ErrorMessage = "Not valid Gender eg : Male Or Female")]
         public string Gender { get; set; }
 
         /// <summary>
@@ -57,9 +53,5 @@ namespace CommonModel.Models
         /// </summary>
         public string DayAndTime { get; set; }
 
-        /// <summary>
-        /// Define token variable
-        /// </summary>
-        public string Token { get; set; } 
     }
 }
