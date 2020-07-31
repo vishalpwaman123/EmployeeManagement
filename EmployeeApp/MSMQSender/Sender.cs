@@ -2,7 +2,8 @@
 namespace SimpleApplication
 {
     using Experimental.System.Messaging;
-    
+    using System;
+
     /// <summary>
     /// Define sender class 
     /// </summary>
@@ -12,35 +13,42 @@ namespace SimpleApplication
         /// Define send method
         /// </summary>
         /// <param name="input">Passing input string</param>
-        public void Send(string input)
+        public void Send(string email, string token)
         {
-            /// <summary>
-            /// Define message queue variable
-            /// </summary>
-            MessageQueue messageQ;
-
-            if (MessageQueue.Exists(@".\Private$\messagequeue"))
+            try
             {
-                messageQ = new MessageQueue(@".\Private$\messagequeue");
+                // Created the referrence of MessageQueue
+                MessageQueue messageQueue = null;
+
+                // Check if Message Queue Exists
+                if (MessageQueue.Exists(@".\Private$\messagequeue"))
+                {
+                    messageQueue = new MessageQueue(@".\Private$\messagequeue");
+                    messageQueue.Label = "Testing Queue";
+                }
+                else
+                {
+                    MessageQueue.Create(@".\Private$\messagequeue");
+                    messageQueue = new MessageQueue(@".\Private$\messagequeue");
+                    messageQueue.Label = "Newly Created Queue";
+                }
+
+                // Message send to Queue
+                messageQueue.Send(email, token);
+
             }
-            else
+            catch (Exception e)
             {
-                messageQ = MessageQueue.Create(@".\Private$\messagequeue");
+                throw new Exception(e.Message);
             }
 
-            Message message = new Message();
-            message.Formatter = new BinaryMessageFormatter();
-            message.Body = input;
-            message.Label = "Registration";
-            message.Priority = MessagePriority.Normal;
-            messageQ.Send(message);
         }
 
         /// <summary>
         /// Declare Senders method
         /// </summary>
         /// <param name="input">Passing input string</param>
-        public void Senders(string input)
+            public void Senders(string input)
         {
             MessageQueue messageQ;
 

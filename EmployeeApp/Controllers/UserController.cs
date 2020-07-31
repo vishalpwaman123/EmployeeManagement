@@ -79,14 +79,14 @@ namespace SimpleApplication.Controllers
                     senderObject.Send(message);*/
 
                     bool Success = true;
-                    var Message = "UserController SuccessFull";
+                    var Message = "User Registration SuccessFull";
                     return this.Ok(new { Success, Message, Data = responseMessage });
                 }
                 else
                 {
                     bool Success = false;
-                    var Message = "UserController Failed";
-                    return this.BadRequest(new { Success, Message , Data = responseMessage });
+                    var Message = "User Registration Failed";
+                    return this.BadRequest(new { Success, Message });
                 }
             }
             catch (Exception e)
@@ -125,7 +125,7 @@ namespace SimpleApplication.Controllers
                 {
                     bool Success = false;
                     var Message = "User Login Failed";
-                    return this.BadRequest(new { Success, Message , Data = responseMessage });
+                    return this.BadRequest(new { Success, Message });
                 }
             }
             catch (Exception e)
@@ -154,12 +154,11 @@ namespace SimpleApplication.Controllers
                     string tokenString = GenerateJsonWebToken(forgetpasswordModel.EmailId, "user authenticate");
 
                     //Message For MSMQ.
-                    string message = "  Token : " + tokenString +
-                                     "\n Email :" + Convert.ToString(forgetpasswordModel.EmailId);
+                    
                                        
                     //Sending Message To MSMQ.
-                    senderObject.Send(message);
-                    smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
+                    senderObject.Send(forgetpasswordModel.EmailId ,tokenString);
+                    //smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
 
                     senderObject.clears();
                     string message1 = Convert.ToString(forgetpasswordModel.EmailId);
@@ -174,7 +173,7 @@ namespace SimpleApplication.Controllers
                 {
                     bool Success = false;
                     var Message = "Invalid Email Id";
-                    return this.BadRequest(new { Success, Message, Data = responseMessage });
+                    return this.BadRequest(new { Success, Message });
                 }
             }
             catch (Exception e)
@@ -211,7 +210,7 @@ namespace SimpleApplication.Controllers
                 {
                     bool Success = false;
                     var Message = "Reset Password UnSuccessFully";
-                    return this.BadRequest(new { Success, Message, Data = responseMessage });
+                    return this.BadRequest(new { Success, Message });
                 }
             }
             catch (Exception e)

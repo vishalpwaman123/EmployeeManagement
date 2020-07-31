@@ -15,6 +15,7 @@ namespace CommonModel.Models
         /// define first name variable
         /// </summary> 
         [Required]
+        //[RegularExpression("([a-zA-Z]{1}[0-9]{9})$", ErrorMessage = "Phone number is not valid")]
         public string Firstname { get; set; }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace CommonModel.Models
         /// <summary>
         /// define user password variable
         /// </summary>
-        [RegularExpression("^.{3,30}$", ErrorMessage = "Password Length should be between 3 to 15")]
+        [RegularExpression("^.{6,30}$", ErrorMessage = "Password Length should be between 6 to 15")]
         [Required]
         public string UserPassword { get; set; }
 

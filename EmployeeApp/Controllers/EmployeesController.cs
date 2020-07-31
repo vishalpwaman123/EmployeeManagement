@@ -59,7 +59,7 @@ namespace EmployeeApp.Controllers
                 {
                     bool Success = false;
                     var Message = " Employee Insertion Failed ";
-                    return this.BadRequest(new { Success , Message , Data = responseMessage });
+                    return this.BadRequest(new { Success , Message });
                 }
                 
             }
@@ -83,7 +83,7 @@ namespace EmployeeApp.Controllers
                 var responseMessage = this.employeeBusiness.GetAllEmployee();
                 bool Success = true;
                 var Message = " Employee Data Found Sucessfully ";
-                return this.Ok(new { Success, Message ,responseMessage });
+                return this.Ok(new { Success, Message , responseMessage });
 
             }
             catch (Exception e)
@@ -116,7 +116,7 @@ namespace EmployeeApp.Controllers
                 {
                     bool Success = false;
                     var Message = "Delete Employee Data Failed ";
-                    return this.BadRequest(new { Success, Message, Data = responseMessage });
+                    return this.BadRequest(new { Success, Message });
                 }
             }
             catch (Exception e)
@@ -150,7 +150,7 @@ namespace EmployeeApp.Controllers
                 {
                     bool Success = false;
                     var Message = " Employee Data Updation Failed ";
-                    return this.BadRequest(new { Success, Message, Data = responseMessage });
+                    return this.BadRequest(new { Success, Message });
                 }
             }
             catch (Exception e)
@@ -178,14 +178,14 @@ namespace EmployeeApp.Controllers
                 if (!result.Equals(null))
                 {
                     bool Success = true;
-                    var Message = "Employee Data found ";
+                    var Message = "Employee Data is found ";
                     return this.Ok(new { Success, Message, Data = result });
                 }
                 else
                 {
                     bool Success = false;
                     var Message = "Employee Data is Not found";
-                    return this.BadRequest(new { Success , Message, Data = result });
+                    return this.BadRequest(new { Success , Message });
                 }
 
             }
