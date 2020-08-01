@@ -232,6 +232,7 @@ namespace RepositoryModel.Service
                         employee.CurrentAddress = sqlDataReader["CurrentAddress"].ToString();
                         employee.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
                         employee.Gender = sqlDataReader["Gender"].ToString();
+                        employee.DayAndTime = sqlDataReader["ModificationDate"].ToString();
                         break;
                     }
                 }

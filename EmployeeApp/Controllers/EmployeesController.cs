@@ -213,13 +213,36 @@ namespace EmployeeApp.Controllers
         {
             try
             {
-                var result = employeeBusiness.GetSpecificEmployeeDetails(Id);
-                //if result is not equal to zero then details found
-                if (!result.Equals(null))
+                EmployeeModel employee;
+
+                string cacheKey = Id.ToString();
+                string serializedEmployee;
+
+                //Getting Employee Details From Redis Cache.
+                var encodedEmployee = distributedCache.Get(cacheKey);
+
+                //If Redis has employee detail then it will fetch from Redis else it will fetch from Database.
+                if (encodedEmployee != null)
+                {
+                    serializedEmployee = Encoding.UTF8.GetString(encodedEmployee);
+                    employee = JsonConvert.DeserializeObject<EmployeeModel>(serializedEmployee);
+                }
+                else
+                {
+                    employee = employeeBusiness.GetSpecificEmployeeDetails(Id);
+                    serializedEmployee = JsonConvert.SerializeObject(employee);
+                    encodedEmployee = Encoding.UTF8.GetBytes(serializedEmployee);
+                    var options = new DistributedCacheEntryOptions()
+                                     .SetSlidingExpiration(TimeSpan.FromMinutes(5))
+                                     .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
+                    distributedCache.Set(cacheKey, encodedEmployee, options);
+                }
+                
+                if (!employee.Equals(null))
                 {
                     bool Success = true;
                     var Message = "Employee Data is found ";
-                    return this.Ok(new { Success, Message, Data = result });
+                    return this.Ok(new { Success, Message, Data = employee });
                 }
                 else
                 {
