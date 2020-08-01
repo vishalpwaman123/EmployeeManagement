@@ -182,6 +182,10 @@ namespace EmployeeApp.Controllers
         {
             try
             {
+                string cacheKey = "employees";
+
+                distributedCache.Remove(cacheKey);
+
                 var responseMessage = this.employeeBusiness.UpdateEmployee(employeeModel);
                 //return this.Ok(new { response });
                 if (responseMessage != null)
