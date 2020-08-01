@@ -148,6 +148,14 @@ namespace EmployeeApp.Controllers
         {
             try
             {
+                //Declare Key
+                string cacheKeyForEmployees = "employees";
+                string cacheKeyForEmployee = EmpId.ToString();
+
+                //Clearing Redis Cache.
+                distributedCache.Remove(cacheKeyForEmployees);
+                distributedCache.Remove(cacheKeyForEmployee);
+
                 //var result = employeeBusiness.GetSpecificEmployeeDetails(employeeModel.EmpId);
                 var responseMessage = this.employeeBusiness.DeleteEmployee(EmpId);
                 if (responseMessage != null)
