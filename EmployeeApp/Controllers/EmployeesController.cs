@@ -56,6 +56,10 @@ namespace EmployeeApp.Controllers
         {
             try
             {
+                string cacheKey = "employees";
+
+                distributedCache.Remove(cacheKey);
+
                 var responseMessage =  this.employeeBusiness.AddEmployeeData(employeeModel);
                 if (responseMessage != null )
                 {

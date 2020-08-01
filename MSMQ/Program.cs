@@ -2,7 +2,7 @@
 // <copyright file="Program.cs" company="BridgeLabz Solution">
 //  Copyright (c) BridgeLabz Solution. All rights reserved.
 // </copyright>
-// <author>Mehboob Shaikh</author>
+// <author>vishal waman</author>
 //-----------------------------------------------------------------------
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:FileHeaderFileNameDocumentationMustMatchTypeName", Justification = "Reviewed.")]
 
@@ -152,7 +152,7 @@ namespace MSMQ
         private void OnReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
         {
             Message message = this.queue.EndReceive(e.AsyncResult);
-            //Console.WriteLine("Message: " + message.Body + message.Label);
+            Console.WriteLine("Message: " + message.Body + message.Label);
 
             // creating email service class object
             SendMail receiver = new SendMail();
