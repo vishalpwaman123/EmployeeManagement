@@ -66,20 +66,24 @@ namespace RepositoryModel.Service
                     sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
                     sqlCommand.Parameters.AddWithValue("@MobileNumber", employeeModel.mobileNumber);
                     sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
-                    /*sqlCommand.Parameters.AddWithValue("@DayAndTime", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));
-                    sqlCommand.Parameters.AddWithValue("@Updation", DateTime.Now.ToString("MM/dd/yyyy h:mm tt"));*/
-                    this.sqlConnectionVariable.Open();
-                    int response =  sqlCommand.ExecuteNonQuery();
-                    this.sqlConnectionVariable.Close();
                     
-                    if (response ==  -1)
+                    this.sqlConnectionVariable.Open();
+                    //int response =  sqlCommand.ExecuteNonQuery();
+                    int status = 1;
+                    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                    while (sqlDataReader.Read())
                     {
-                        return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
+                        status = sqlDataReader.GetInt32(0);
+                        if (status == 1)
+                        {
+                            this.sqlConnectionVariable.Close();
+                            return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
+                        }else
+                        {  
+                            return null;
+                        }
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    this.sqlConnectionVariable.Close();
                 }
                 return null;
             }
@@ -110,15 +114,19 @@ namespace RepositoryModel.Service
                 while (sqlDataReader.Read())
                 {
                     EmployeeModel employeeModel = new EmployeeModel();
-                    employeeModel.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
-                    employeeModel.Firstname = sqlDataReader["FirstName"].ToString();
-                    employeeModel.Lastname = sqlDataReader["LastName"].ToString();
-                    employeeModel.EmailId = sqlDataReader["EmailId"].ToString();
-                    employeeModel.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
-                    employeeModel.CurrentAddress = sqlDataReader["CurrentAddress"].ToString();
-                    employeeModel.Gender = sqlDataReader["Gender"].ToString();
-                    employeeModel.DayAndTime = sqlDataReader["ModificationDate"].ToString();
-                    employeeModelsList.Add(employeeModel);
+                    if (Convert.ToInt32(sqlDataReader["PresentState"]) == 1)
+                    {
+                        employeeModel.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
+                        employeeModel.Firstname = sqlDataReader["FirstName"].ToString();
+                        employeeModel.Lastname = sqlDataReader["LastName"].ToString();
+                        employeeModel.EmailId = sqlDataReader["EmailId"].ToString();
+                        employeeModel.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
+                        employeeModel.CurrentAddress = sqlDataReader["CurrentAddress"].ToString();
+                        employeeModel.Gender = sqlDataReader["Gender"].ToString();
+                        employeeModel.DayAndTime = sqlDataReader["ModificationDate"].ToString();
+                        employeeModelsList.Add(employeeModel);
+                        break;
+                    }
                 }
                 this.sqlConnectionVariable.Close();
                 return employeeModelsList;
@@ -138,22 +146,29 @@ namespace RepositoryModel.Service
         {
             try
             {
-                EmployeeModel employeeModel1 = new EmployeeModel();
-                employeeModel1 = GetSpecificEmployeeDetails(EmpId);
-                SqlCommand sqlCommand = new SqlCommand("spDeleteEmployeeData", this.sqlConnectionVariable);
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
-                this.sqlConnectionVariable.Open();
-                var response = sqlCommand.ExecuteNonQuery();
-               
-                if (response == -1)
+                
+                    int status = 1;
+                    EmployeeModel employeeModel1 = new EmployeeModel();
+                    employeeModel1 = GetSpecificEmployeeDetails(EmpId);
+                    SqlCommand sqlCommand = new SqlCommand("spDeleteEmployeeData", this.sqlConnectionVariable);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
+                    this.sqlConnectionVariable.Open();
+
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
                 {
-                    return employeeModel1;
+                    status = sqlDataReader.GetInt32(0);
+                    if (status == 1)
+                    {
+                        return employeeModel1;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
             catch (Exception exception)
             {
@@ -185,17 +200,24 @@ namespace RepositoryModel.Service
                     sqlCommand.Parameters.AddWithValue("@CurrentAddress", employeeModel.CurrentAddress);
                     sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
                     this.sqlConnectionVariable.Open();
-                    var response = sqlCommand.ExecuteNonQuery();
-                    this.sqlConnectionVariable.Close();
-                    if (response == -1)
+                    //var response = sqlCommand.ExecuteNonQuery();
+                    int status = 1;
+                    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                    while (sqlDataReader.Read())
                     {
-                        return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
-                    }
-                    else
-                    {
-                        return null;
+                        status = sqlDataReader.GetInt32(0);
+                        if (status == 1)
+                        {
+                            this.sqlConnectionVariable.Close();
+                            return GetSpecificEmployeeAllDetailes(employeeModel.EmailId);
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
+                this.sqlConnectionVariable.Close();
                 return null;
             }
             catch (Exception exception)
@@ -213,7 +235,7 @@ namespace RepositoryModel.Service
         {
             try
             {
-                EmployeeModel employee = new EmployeeModel();
+                EmployeeModel employeeModel = new EmployeeModel();
 
                 SqlCommand sqlCommand = new SqlCommand("spgetAllEmployee", this.sqlConnectionVariable);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -222,22 +244,22 @@ namespace RepositoryModel.Service
 
                 while (sqlDataReader.Read())
                 {
-
-                    employee.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
-                    if (Id == employee.EmpId)
+                    //EmployeeModel employeeModel = new EmployeeModel();
+                    if (Convert.ToInt32(sqlDataReader["PresentState"]) == 1)
                     {
-                        employee.Firstname = sqlDataReader["FirstName"].ToString();
-                        employee.Lastname = sqlDataReader["LastName"].ToString();
-                        employee.EmailId = sqlDataReader["EmailId"].ToString();
-                        employee.CurrentAddress = sqlDataReader["CurrentAddress"].ToString();
-                        employee.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
-                        employee.Gender = sqlDataReader["Gender"].ToString();
-                        employee.DayAndTime = sqlDataReader["ModificationDate"].ToString();
+                        employeeModel.EmpId = Convert.ToInt32(sqlDataReader["EmpId"]);
+                        employeeModel.Firstname = sqlDataReader["FirstName"].ToString();
+                        employeeModel.Lastname = sqlDataReader["LastName"].ToString();
+                        employeeModel.EmailId = sqlDataReader["EmailId"].ToString();
+                        employeeModel.mobileNumber = Convert.ToInt64(sqlDataReader["MobileNumber"]);
+                        employeeModel.CurrentAddress = sqlDataReader["CurrentAddress"].ToString();
+                        employeeModel.Gender = sqlDataReader["Gender"].ToString();
+                        employeeModel.DayAndTime = sqlDataReader["ModificationDate"].ToString();
+                        //employeeModelsList.Add(employeeModel);
                         break;
                     }
                 }
-                 
-                return employee;
+                return employeeModel;
             }
             catch (Exception e)
             {
@@ -304,19 +326,26 @@ namespace RepositoryModel.Service
             string EmailId;
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
             sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@EmailId", emailId);
             sqlCommand.Parameters.AddWithValue("@Flag", 1);
             this.sqlConnectionVariable.Open();
+            //SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            int status = 1;
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
             {
-                EmailId = sqlDataReader["EmailId"].ToString(); 
-                if(EmailId == emailId)
+                status = sqlDataReader.GetInt32(0);
+                this.sqlConnectionVariable.Close();
+                if (status == 1)
                 {
-                    this.sqlConnectionVariable.Close();
                     return false;
                 }
+                else
+                {
+                    return true;
+                }
             }
-            this.sqlConnectionVariable.Close();
+            //this.sqlConnectionVariable.Close();
             return true;
         }
     }

@@ -64,7 +64,7 @@ namespace RepositoryModel.Service
                 {
     
                     UserModel.UserPassword = Encrypt(UserModel.UserPassword).ToString();
-                    SqlCommand sqlCommand = new SqlCommand("spAddRegistrationData", this.sqlConnectionVariable);
+                    SqlCommand sqlCommand = new SqlCommand("spUserRegistrationData", this.sqlConnectionVariable);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
 
                     sqlCommand.Parameters.AddWithValue("@Firstname", UserModel.Firstname);
@@ -80,9 +80,8 @@ namespace RepositoryModel.Service
                     var response = sqlCommand.ExecuteNonQuery();
 
                     this.sqlConnectionVariable.Close();
-                    if (response == -1)
-                    {
-
+                    if (response == 1)
+                    { 
                         return GetSpecificEmployeeAllDetailes(UserModel.EmailId);
                     }
                     else
@@ -247,15 +246,24 @@ namespace RepositoryModel.Service
             string EmailId;
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
             sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@EmailId", emailId);
             sqlCommand.Parameters.AddWithValue("@Flag", 0);
             this.sqlConnectionVariable.Open();
+            //SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            int status = 1;
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
             {
-                EmailId = sqlDataReader["EmailId"].ToString();
-                if (EmailId == emailId)
+                status = sqlDataReader.GetInt32(0);
+                if (status == 1)
                 {
+                    this.sqlConnectionVariable.Close();
                     return false;
+                }
+                else
+                {
+                    this.sqlConnectionVariable.Close();
+                    return true;
                 }
             }
             this.sqlConnectionVariable.Close();
