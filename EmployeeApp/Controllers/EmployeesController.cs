@@ -50,7 +50,7 @@ namespace EmployeeApp.Controllers
         /// </summary>
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return action result</returns>
-        [HttpPost]
+        /*[HttpPost]
         [Authorize]
         public IActionResult AddEmployeeData(REmployeeModel employeeModel)
         {
@@ -80,7 +80,7 @@ namespace EmployeeApp.Controllers
                 bool Success = false;
                 return this.BadRequest(new { Success, message = e.Message });
             }
-        }
+        }*/
 
         /// <summary>
         /// declaration of get all employee method

@@ -20,7 +20,7 @@ namespace EmployeeManagementTestCase
         /// <summary>
         /// Define configuration variable
         /// </summary>
-        private IConfiguration configuration;
+        private IConfiguration configuration = null;
 
         /// <summary>
         /// Define User controller variable
