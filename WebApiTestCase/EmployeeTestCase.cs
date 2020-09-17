@@ -46,7 +46,7 @@ namespace WebApiTestCase
             employeeController = new EmployeesController(business, distributedCache);
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Define Given Test Case When All Valid Fields Should Return Ok Request method 
         /// </summary>
         [Fact]
@@ -95,7 +95,7 @@ namespace WebApiTestCase
             {
                 Assert.IsType<BadRequestObjectResult>(exception);
             }
-        }
+        }*/
 
         /// <summary>
         /// Define Given Test Case When Empty String Fields Should Return Bad Request method
@@ -124,7 +124,7 @@ namespace WebApiTestCase
             }
         }
 
-        /// <summary>
+       /* /// <summary>
         /// Define Given Test Case When Get All Employee Fields Should Return ok Request method
         /// </summary>
         [Fact]
@@ -139,12 +139,12 @@ namespace WebApiTestCase
             {
                 Assert.Equal(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, exception.type);
             }
-        }
+        }*/
 
         /// <summary>
         /// Define Given Test Case When Update Fields Should Return Ok Request method 
         /// </summary>
-        [Fact]
+        /*[Fact]
         public void GivenTestCase_WhenUpdateFields_ShouldReturnOkRequest()
         {
             try
@@ -167,7 +167,7 @@ namespace WebApiTestCase
             {
                 Assert.Equal(CustomeException.ExceptionType.EMPTY_FIELD_EXCEPTION, exception.type);
             }
-        }
+        }*/
 
         /// <summary>
         /// Define Given Test Case When Update Fields Should Return Bad Request method

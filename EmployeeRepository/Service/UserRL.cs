@@ -35,7 +35,7 @@ namespace RepositoryModel.Service
         {
             var configuration = this.GetConfiguration();
             this.sqlConnectionVariable = new SqlConnection(configuration.GetSection("Data").GetSection("ConnectionVariable").Value);
-        }
+         }
 
         /// <summary>
         /// Define information configuration method

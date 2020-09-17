@@ -183,9 +183,9 @@ namespace EmployeeApp.Controllers
         /// </summary>
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return action</returns>
-        [HttpPost]
+        [HttpPut("{EmpId}")]
         [Authorize]
-        [Route("updateEmployeeData")]
+        //[Route("EmpId")]
         public IActionResult UpdateEmployee(REmployeeModel employeeModel)
         {
             try
@@ -223,7 +223,7 @@ namespace EmployeeApp.Controllers
         /// </summary>
         /// <param name="Id">passing id</param>
         /// <returns>return action result</returns>
-        [HttpGet("{Id}")]
+        [HttpGet("{EmpId}")]
         [Authorize]
         public ActionResult GetSpecificEmployeeDetails([FromRoute] int Id)
         {

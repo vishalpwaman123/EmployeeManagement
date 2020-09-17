@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using BusinessModel.Interface;
 using CommonModel.Models;
 using CommonModel.RequestModels;
-using EmployeeManagement.SMTP;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,15 +41,7 @@ namespace SimpleApplication.Controllers
             this.configuration = configuration;
         }
 
-        /// <summary>
-        /// Declare Sender object
-        /// </summary>
-        Sender senderObject = new Sender();
 
-        /// <summary>
-        /// Declare smtp object
-        /// </summary>
-        SMTP smtpObject = new SMTP();
 
         /// <summary>
         /// Declaration of add employee method
@@ -153,17 +144,6 @@ namespace SimpleApplication.Controllers
                 {
                     string tokenString = GenerateJsonWebToken(forgetpasswordModel.EmailId, "user authenticate");
 
-                    //Message For MSMQ.
-                    
-                                       
-                    //Sending Message To MSMQ.
-                    senderObject.Send(forgetpasswordModel.EmailId ,tokenString);
-                    //smtpObject.SendEmail(forgetpasswordModel.EmailId, tokenString);
-
-                    senderObject.clears();
-                    string message1 = Convert.ToString(forgetpasswordModel.EmailId);
-                    senderObject.Senders(message1);
-
                     bool Success = true;
                     var Message = "Password Send On User Email Address SuccessFully";
                     return this.Ok(new { Success, Message });
@@ -196,7 +176,6 @@ namespace SimpleApplication.Controllers
         {
             try
             {
-                EmailId = senderObject.Receivers();
                 var responseMessage = this.employeeBusiness.ResetPassword(resetPasswordModel, EmailId);
                 if (responseMessage == true)
                 {

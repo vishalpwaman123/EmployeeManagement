@@ -36,7 +36,7 @@ namespace CommonModel.Models
         /// <summary>
         /// define user password variable
         /// </summary>
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,10}$", ErrorMessage = "Password Length should be between 6 to 15")]
+        //[RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,10}$", ErrorMessage = "Password Length should be between 6 to 15")]
         [Required]
         public string UserPassword { get; set; }
 
