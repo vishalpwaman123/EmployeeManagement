@@ -323,7 +323,7 @@ namespace RepositoryModel.Service
         /// <returns>return boolean value</returns>
         public bool EmailChecking(string emailId)
         {
-            string EmailId;
+            //string EmailId;
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
             sqlCommand.CommandType = CommandType.StoredProcedure;
             sqlCommand.Parameters.AddWithValue("@EmailId", emailId);
