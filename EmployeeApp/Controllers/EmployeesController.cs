@@ -50,7 +50,7 @@ namespace EmployeeApp.Controllers
         /// </summary>
         /// <param name="employeeModel">passing employee model object</param>
         /// <returns>return action result</returns>
-        /*[HttpPost]
+        [HttpPost]
         [Authorize]
         public IActionResult AddEmployeeData(REmployeeModel employeeModel)
         {
@@ -60,27 +60,27 @@ namespace EmployeeApp.Controllers
 
                 distributedCache.Remove(cacheKey);
 
-                var responseMessage =  this.employeeBusiness.AddEmployeeData(employeeModel);
-                if (responseMessage != null )
+                var responseMessage = this.employeeBusiness.AddEmployeeData(employeeModel);
+                if (responseMessage != null)
                 {
                     bool Success = true;
                     var Message = "Add Employee Data Sucessfully ";
-                    return this.Ok(new { Success , Message , Data = responseMessage });
+                    return this.Ok(new { Success, Message, Data = responseMessage });
                 }
-                else 
+                else
                 {
                     bool Success = false;
                     var Message = " Employee Insertion Failed ";
-                    return this.BadRequest(new { Success , Message });
+                    return this.BadRequest(new { Success, Message });
                 }
-                
+
             }
             catch (Exception e)
             {
                 bool Success = false;
                 return this.BadRequest(new { Success, message = e.Message });
             }
-        }*/
+        }
 
         /// <summary>
         /// declaration of get all employee method
